@@ -84,21 +84,21 @@
 			<div  style="width: 96%;height:auto;overflow:hidden;margin: 20px auto">
 				<el-checkbox v-model="showFace" style="float: right;" @change="changes">是否在业主端展示车位表价</el-checkbox> 
 			</div>
-			<el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" border style="width: 100%;" @selection-change="handleSelectionChange" :header-cell-style="{background:'#dcd3ef',color:'#606266'}"  header-row-class-name="tableHead" height="550">
+			<el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" border style="width: 95%;margin:0 auto;" @selection-change="handleSelectionChange" :header-cell-style="{background:'#dcd3ef',color:'#606266'}"  header-row-class-name="tableHead" height="550">
 				<el-table-column type="selection" width="50" align="center"></el-table-column>
 				<el-table-column type="index" label="序号" width="55" align="center"></el-table-column>
 				<el-table-column prop="name" label="车位名称" width="85" align="center"></el-table-column>
 				<el-table-column prop="code" label="车位编号" width="85" align="center"></el-table-column>
 				<el-table-column prop="level1Name" label="区域" align="center" width="55"></el-table-column>
-				<el-table-column prop="level2Name" label="楼栋" align="center" width="55"></el-table-column>
-				<el-table-column prop="level3Name" label="楼层" align="center" width="55"></el-table-column>
-				<el-table-column prop="truckSpaceImages" label="车位图片" align="center" width="180">
+				<el-table-column prop="level2Name" label="楼栋" align="center" width="80"></el-table-column>
+				<el-table-column prop="level3Name" label="楼层" align="center" width="80"></el-table-column>
+				<!-- <el-table-column prop="truckSpaceImages" label="车位图片" align="center" width="180">
 					<template slot-scope="scope">
 						<el-scrollbar style="height: 80px;width: 100%;">
 							<img :src="item" v-for="item in scope.row.truckSpaceImages" style="width: 158px;height: 80px;display: block;margin-bottom: 10px;" />
 						</el-scrollbar>
 					</template>
-				</el-table-column>
+				</el-table-column> -->
 				<el-table-column prop="outsideArea" label="建筑面积（m²）" align="center" width="105"></el-table-column>
 				<el-table-column prop="id" v-if:"false"></el-table-column>
 				<el-table-column prop="insideArea" label="套内面积（m²）" align="center" width="105"></el-table-column>
