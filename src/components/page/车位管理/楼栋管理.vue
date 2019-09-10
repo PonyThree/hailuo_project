@@ -83,7 +83,7 @@
 				}else{
 					this.currentPage=currentPage;
 				}
-				this.$axios.get(request.testUrl+"/product/auth1/truckSpaceFloor/selectList?page="+this.currentPage+"&pageSize="+this.pagesize,{
+				this.$axios.get(request.testUrl+"/product/auth1/truckSpaceRidgepole/selectList?page="+this.currentPage+"&pageSize="+this.pagesize,{
 					params:{
 						status:this.form.status,
 						name:this.form.name,
@@ -120,7 +120,7 @@
 				}).then(() => {
 					this.$axios({
 			        	method:'post',
-			        	url:request.testUrl+"/product/auth1/truckSpaceFloor/doDeleteBath",
+			        	url:request.testUrl+"/product/auth1/truckSpaceRidgepole/doDeleteBath",
 			        	data:id
 					}).then(res=>{
 						if(res.data.code==0){
@@ -156,7 +156,7 @@
 				}).then(() => {
 					this.$axios({
 			        	method:'post',
-			        	url:request.testUrl+"/product/auth1/truckSpaceFloor/doDeleteBath",
+			        	url:request.testUrl+"/product/auth1/truckSpaceRidgepole/doDeleteBath",
 			        	data:[
 			        		this.tableData[index].id
 			        	]

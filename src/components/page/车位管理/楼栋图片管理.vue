@@ -132,21 +132,24 @@ export default {
     },
     //编辑
     insertPic(node) {
+      console.log(node)
       obj={};
       if(!node.parent.id){
         // 当前id值
         obj.leveId=node.data.id;
       }else{
         if(!node.parent.parent.parent){
-          obj.floorId=node.data.id;
           obj.leveId=node.parent.data.id;
-        }else{
-          // 区
-          obj.leveId=node.parent.parent.parent.data[0].id;
-          // 层
-          obj.floorId=node.parent.data.id;
-          // 栋
           obj.ridgepoleId=node.data.id;
+        }else{
+          // alert(node.parent.parent.data.id)
+          // 区
+          obj.leveId=node.parent.parent.data.id;
+          // 栋
+          obj.ridgepoleId=node.parent.data.id;
+          // 层
+          obj.floorId=node.data.id;
+          
         }
         //上两级id
         // console.log(node.parent.parent.parent.data[0].id)

@@ -199,7 +199,7 @@
 					if (valid) {
 			        	this.$axios({
 				        	method:'post',
-				        	url:request.testUrl+"/product/auth1/truckSpaceRidgepole/insert",
+				        	url:request.testUrl+"/product/auth1/truckSpaceFloor/insert",
 				        	data:{
 				        		"code": '',
 							    "id": "",
