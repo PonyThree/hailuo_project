@@ -756,9 +756,11 @@
 				if(this.currentTime>=this.form.controllRespDto.startTime){
 					this.openQuotation=false;
 					this.form.controllRespDto.openQuotation=1;
+					// alert(this.form.controllRespDto.openQuotation)
 				}else{
 					this.openQuotation=false;
 					this.form.controllRespDto.openQuotation=0;
+					// alert(this.form.controllRespDto.openQuotation)
 				}
 			},
 			//一上来就进行时间判断
