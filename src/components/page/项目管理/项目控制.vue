@@ -957,6 +957,8 @@
 							type: 'info',
 							message: '信息更改成功！'
 						});
+						// this.reload();
+						
 					}else{
 						this.$message({
 							type: 'info',

@@ -221,20 +221,20 @@
 	    created(){
 	    	this.size=this.$route.query.size,
 	    	//渲染车位层数
-	    	this.$axios.get(request.testUrl+"/product/auth1/truckSpaceFloor/selectAllList")
+	    	this.$axios.get(request.testUrl+"/product/auth1/TruckSpaceLevelThree/doSelectAllList")
 		    	.then(res=>{
 		            if(res.data.code==0){
 		            	this.typeList=res.data.data
 		            }
 		    	})
 		    //渲染车位楼层
-			this.$axios.get(request.testUrl+"/product/auth1/truckSpaceRidgepole/doSelectAllList")
+			this.$axios.get(request.testUrl+"/product/auth1/TruckSpaceLevelTwo/doSelectAllList")
 		    	.then(res=>{
 		            if(res.data.code==0){
 		            	this.dongList=res.data.data
 		            }
 		    	})
-			this.$axios.get(request.testUrl+"/product/auth1/truckSpaceRidgepole/doSelectAllList")
+			this.$axios.get(request.testUrl+"/product/auth1/TruckSpaceLevelTwo/doSelectAllList")
 		    	.then(res=>{
 		            if(res.data.code==0){
 		            	this.dongList1=res.data.data
@@ -257,20 +257,20 @@
 				if(to.path=="/批量设置信息"){
 					this.size=this.$route.query.size,
 					//渲染车位层数
-			    	this.$axios.get(request.testUrl+"/product/auth1/truckSpaceFloor/selectAllList")
+			    	this.$axios.get(request.testUrl+"/product/auth1/TruckSpaceLevelThree/doSelectAllList")
 				    	.then(res=>{
 				            if(res.data.code==0){
 				            	this.typeList=res.data.data
 				            }
 				    	})
 				    //渲染车位楼层
-					this.$axios.get(request.testUrl+"/product/auth1/truckSpaceRidgepole/doSelectAllList")
+					this.$axios.get(request.testUrl+"/product/auth1/TruckSpaceLevelTwo/doSelectAllList")
 				    	.then(res=>{
 				            if(res.data.code==0){
 				            	this.dongList=res.data.data
 				            }
 				    	})
-					this.$axios.get(request.testUrl+"/product/auth1/truckSpaceRidgepole/doSelectAllList")
+					this.$axios.get(request.testUrl+"/product/auth1/TruckSpaceLevelTwo/doSelectAllList")
 				    	.then(res=>{
 				            if(res.data.code==0){
 				            	this.dongList1=res.data.data

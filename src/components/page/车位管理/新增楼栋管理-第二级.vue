@@ -199,7 +199,7 @@
 			        	
 			        	this.$axios({
 				        	method:'post',
-				        	url:request.testUrl+"/product/auth1/truckSpaceRidgepole/insert",
+				        	url:request.testUrl+"/product/auth1/TruckSpaceLevelTwo/insert",
 				        	data:{
 				        		"code": '',
 							    "id": "",

@@ -93,9 +93,9 @@
 	  	created(){
 	  		//渲染信息
 	  		let id=this.$route.query.id;
-			this.$axios.get(request.testUrl+"/product/auth1/truckSpaceFloor/selectOne",{
+			this.$axios.get(request.testUrl+"/product/auth1/TruckSpaceLevelThree/selectOne",{
 					params:{
-						floorId:id,
+						truckSpaceLevelThreeId:id,
 					}
 			}).then(res=>{
 				if(res.data.code==0){
@@ -121,9 +121,9 @@
 			 	if(to.path=="/修改楼栋管理-第三级"){
 			 		//渲染信息
 			  		let id=this.$route.query.id;
-					this.$axios.get(request.testUrl+"/product/auth1/truckSpaceFloor/selectOne",{
+					this.$axios.get(request.testUrl+"/product/auth1/TruckSpaceLevelThree/selectOne",{
 							params:{
-								floorId:id,
+								truckSpaceLevelThreeId:id,
 							}
 					}).then(res=>{
 						if(res.data.code==0){
@@ -212,7 +212,7 @@
 	        	// images.push(url)
 	        	this.$axios({
 		        	method:'post',
-		        	url:request.testUrl+"/product/auth1/truckSpaceFloor/doUpdate",
+		        	url:request.testUrl+"/product/auth1/TruckSpaceLevelThree/doUpdate",
 		        	data:{
 		        		id:this.$route.query.id,
 		        		name:this.form.info.name,

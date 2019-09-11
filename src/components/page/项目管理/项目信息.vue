@@ -86,7 +86,7 @@
 	    					<el-checkbox label="在前端展示此项目" v-model="form.controllRespDto.showStatus" v-show="false"></el-checkbox>
 						</el-form-item>
 						<el-form-item label="开盘时间 :" style="width: 800px;">
-							<el-date-picker v-model="form.controllRespDto.startTime" type="datetime" @blur="getStartTime"></el-date-picker>
+							<el-date-picker v-model="form.controllRespDto.startTime" type="datetime" @blur="getStartTime" :close-on-click-modal="false"></el-date-picker>
 							<el-date-picker v-model="form.controllRespDto.endTime" type="datetime" v-show="false"></el-date-picker>
 							<!--<el-checkbox label="开盘时间待定" v-model="form.controllRgou.checked10" style="margin-left: 30px;"></el-checkbox>-->
 						</el-form-item>

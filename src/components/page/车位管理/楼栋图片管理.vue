@@ -86,7 +86,7 @@ export default {
         // 层
         floorSelectVos:[],
         // 栋
-        ridgepoleSelectVos:[],
+        TruckSpaceLevelTwoSelectVos:[],
       },
       treeData:[],
       // data:'',
@@ -110,15 +110,15 @@ export default {
       this.$axios.get(request.testUrl+"/product/auth1/truckSpace/getRelationList").then(res=>{
         let arr=res.data.data.areaSelectVos;
         arr.forEach(item=>{
-          item.children=item.ridgepoleSelectImageDtos;
+          item.children=item.truckSpaceLevelTwoSelectImageDtos;
           item.label=item.name;
           delete item.name;
-          delete item.ridgepoleSelectImageDtos;
+          delete item.truckSpaceLevelTwoSelectImageDtos;
           item.children.forEach(item=>{
-            item.children=item.floorSelectImageDtos;
+            item.children=item.truckSpaceLevelThreeSelectImageDtos;
             item.label=item.name;
             delete item.name;
-            delete item.floorSelectImageDtos;
+            delete item.truckSpaceLevelThreeSelectImageDtos;
             item.children.forEach(item=>{
               item.children=item.children;
               item.label=item.name;
@@ -132,7 +132,7 @@ export default {
     },
     //编辑
     insertPic(node) {
-      console.log(node)
+      // console.log(node)
       obj={};
       if(!node.parent.id){
         // 当前id值
@@ -140,15 +140,15 @@ export default {
       }else{
         if(!node.parent.parent.parent){
           obj.leveId=node.parent.data.id;
-          obj.ridgepoleId=node.data.id;
+          obj.truckSpaceLevelTwoId=node.data.id;
         }else{
           // alert(node.parent.parent.data.id)
           // 区
           obj.leveId=node.parent.parent.data.id;
           // 栋
-          obj.ridgepoleId=node.parent.data.id;
+          obj.truckSpaceLevelTwoId=node.parent.data.id;
           // 层
-          obj.floorId=node.data.id;
+          obj.truckSpaceLevelThreeId=node.data.id;
           
         }
         //上两级id

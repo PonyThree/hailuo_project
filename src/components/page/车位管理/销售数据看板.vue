@@ -104,14 +104,14 @@
 					}
 				})
 	  		//渲染楼栋二级列表
-		    this.$axios.get(request.testUrl+"/product/auth1/truckSpaceFloor/selectAllList")
+		    this.$axios.get(request.testUrl+"/product/auth1/TruckSpaceLevelThree/doSelectAllList")
 		    	.then(res=>{
 		            if(res.data.code==0){
 		            	this.level2Info=res.data.data
 		            }
 		    	})
 		    //渲染楼栋三级列表
-		    this.$axios.get(request.testUrl+"/product/auth1/truckSpaceRidgepole/doSelectAllList")
+		    this.$axios.get(request.testUrl+"/product/auth1/TruckSpaceLevelTwo/doSelectAllList")
 		    	.then(res=>{
 		            if(res.data.code==0){
 		            	this.level3Info=res.data.data
