@@ -47,7 +47,7 @@
 							</div>
 							<div class="clear"></div>
 							<div style="width: 95.5%;height: auto;overflow: hidden;margin: 40px auto 10px;">
-								<el-button class="aa1" @click="selectAll">全选删除</el-button>
+								<el-button class="aa1" @click="selectAll">批量删除</el-button>
 								
 							</div>
 							<!--表格-->
