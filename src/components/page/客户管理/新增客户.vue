@@ -45,10 +45,10 @@
 									<el-select v-model="item.spaceAreaId" placeholder="请选择区域" style="width: 150px;">
 									    <el-option v-for="item in level1Info" :label="item.name" :value="item.id" :key="item.id"></el-option>
 								    </el-select>
-								    <el-select v-model="item.spaceFloorId" placeholder="请选择层" style="width: 150px;">
+								    <el-select v-model="item.spacetruckSpaceLevelTwoId " placeholder="请选择栋" style="width: 150px;">
 									    <el-option v-for="item in level2Info" :label="item.name" :value="item.id" :key="item.id"></el-option>
 								    </el-select>
-								    <el-select v-model="item.spacetruckSpaceLevelTwoId" placeholder="请选择栋" style="width: 150px;">
+								    <el-select v-model="item.spaceFloorId" placeholder="请选择层" style="width: 150px;">
 									    <el-option v-for="item in level3Info" :label="item.name" :value="item.id" :key="item.id"></el-option>
 								    </el-select>
 									<el-input v-model="item.truckSpaceName" placeholder="请输入车位名称" style="width: 200px;margin-top: 5px;" @blur.prevent="examine(item)"></el-input>
@@ -125,24 +125,24 @@
 					}
 		        })
 		    //渲染区域列表
-		    this.$axios.get(request.testUrl+"/product/auth1/truckSpaceArea/doSelectAllList")
+		    this.$axios.get(request.testUrl+"/product/auth1/truckSpaceArea/selectAllList")
 		    	.then(res=>{
 		            if(res.data.code==0){
 		            	this.level1Info=res.data.data
 		            }
 		    	})
-		    //渲染楼栋二级列表
+		    //渲染楼栋三级列表
 		    this.$axios.get(request.testUrl+"/product/auth1/TruckSpaceLevelThree/doSelectAllList")
 		    	.then(res=>{
 		            if(res.data.code==0){
-		            	this.level2Info=res.data.data
+		            	this.level3Info=res.data.data
 		            }
 		    	})
-		    //渲染楼栋三级列表
+		    //渲染楼栋二级列表
 		    this.$axios.get(request.testUrl+"/product/auth1/TruckSpaceLevelTwo/doSelectAllList")
 		    	.then(res=>{
 		            if(res.data.code==0){
-		            	this.level3Info=res.data.data
+		            	this.level2Info=res.data.data
 		            }
 		    	})
 	    },
@@ -167,8 +167,8 @@
 		    	url:request.testUrl+"/product/auth1/truckSpace/findHasSelled",
 		    	data:{
 		    		level1:item.spaceAreaId,
-		    		level2:item.spaceFloorId,
-		    		level3:item.spacetruckSpaceLevelTwoId,
+		    		level2:item.spacetruckSpaceLevelTwoId,
+		    		level3:item.spaceFloorId,
 		    		name:item.truckSpaceName
 		    	}
 				}).then(res=>{
@@ -196,8 +196,8 @@
     				this.payStatus=this.info.orderList[i].payStatus,
     				this.payTime=this.info.orderList[i].payTime,
     				this.spaceAreaId=this.info.orderList[i].spaceAreaId,
-    				this.spaceFloorId=this.info.orderList[i].spaceFloorId,
     				this.spacetruckSpaceLevelTwoId=this.info.orderList[i].spacetruckSpaceLevelTwoId,
+    				this.spacetruckSpaceLevelThreeId=this.info.orderList[i].spaceFloorId,
     				this.truckSpaceName=this.info.orderList[i].truckSpaceName
     				if(this.payStatus!=undefined&&this.truckSpaceName==undefined){
 	    				this.$message({
@@ -211,8 +211,8 @@
 			        	payStatus:parseInt(this.payStatus),
 			        	payTime:this.payTime,
 			        	spaceAreaId:this.spaceAreaId,
-			        	spaceFloorId:this.spaceFloorId,
 			        	spacetruckSpaceLevelTwoId:this.spacetruckSpaceLevelTwoId,
+			        	spacetruckSpaceLevelThreeId:this.spacetruckSpaceLevelThreeId,
 			        	truckSpaceName:this.truckSpaceName
 		    		})
 	    		}

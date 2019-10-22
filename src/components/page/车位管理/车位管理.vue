@@ -5,7 +5,7 @@
 				<el-form-item label="车位状态:">
 	                <el-select v-model="form.sellStatus" placeholder="请选择状态" style="width: 275px;">
 					    <el-option label="所有状态" value=""></el-option>
-					    <el-option v-for="item in typeList" :label="item.name" :value="item.code"></el-option>
+					    <el-option v-for="item in typeList" :label="item.name" :value="item.code" :key="item.id"></el-option>
 				    </el-select>
 	           	</el-form-item>
 	           	<el-form-item label="车位销售价:">
@@ -42,12 +42,12 @@
 						<el-checkbox v-for="item in level1Info" :label="item.id" :key="item.id">{{item.name}}</el-checkbox> 
 					</el-checkbox-group>
 	            </el-form-item> 
-	            <el-form-item label="所在楼栋">
+				<el-form-item label="所在楼栋">
 	               <el-checkbox-group v-model="form.level2">
 					    <el-checkbox v-for="item in level2Info" :label="item.id" :key="item.id">{{item.name}}</el-checkbox>
 					</el-checkbox-group>
 	            </el-form-item> 
-	            <el-form-item label="所在楼栋">
+	            <el-form-item label="所在楼层">
 	               <el-checkbox-group v-model="form.level3">
 					    <el-checkbox v-for="item in level3Info" :label="item.id" :key="item.id">{{item.name}}</el-checkbox>
 					</el-checkbox-group>
@@ -92,13 +92,16 @@
 				<el-table-column prop="level1Name" label="区域" align="center" width="55"></el-table-column>
 				<el-table-column prop="level2Name" label="楼栋" align="center" width="80"></el-table-column>
 				<el-table-column prop="level3Name" label="楼层" align="center" width="80"></el-table-column>
-				<!-- <el-table-column prop="truckSpaceImages" label="车位图片" align="center" width="180">
+				<el-table-column  label="车位图片" align="center" width="180" >
 					<template slot-scope="scope">
-						<el-scrollbar style="height: 80px;width: 100%;">
-							<img :src="item" v-for="item in scope.row.truckSpaceImages" style="width: 158px;height: 80px;display: block;margin-bottom: 10px;" />
+						<el-scrollbar style="height: 80px;width: 100%;" v-if="scope.row.truckSpaceImages.length>0">
+							<img v-for="item in scope.row.truckSpaceImages" :src="item"  style="width: 158px;height: 80px;display: block;margin-bottom: 10px;" :key="item.id" v-if="item"/>
+						</el-scrollbar>
+						<el-scrollbar style="height: 80px;width: 100%;" v-if="scope.row.truckSpaceImages.length<=0&&scope.row.truckSpaceDetailImages.length>0">
+							<img :src="item" v-for="item in scope.row.truckSpaceDetailImages" style="width: 158px;height: 80px;display: block;margin-bottom: 10px;" :key="item.id" v-if="item"/>
 						</el-scrollbar>
 					</template>
-				</el-table-column> -->
+				</el-table-column>
 				<el-table-column prop="outsideArea" label="建筑面积（m²）" align="center" width="105"></el-table-column>
 				<el-table-column prop="id" v-if:"false"></el-table-column>
 				<el-table-column prop="insideArea" label="套内面积（m²）" align="center" width="105"></el-table-column>
@@ -124,17 +127,17 @@
 		</div>
 		
 		<!--导入车位图弹出框-->
-		<el-dialog title="批量导入车位图" :visible.sync="revise" width="25%">
+		<el-dialog title="批量导入车位图" :visible.sync="revise" width="30%">
             <el-form ref="info" :model="info" label-width="120px" :label-position="labelPositions">
-            	<el-checkbox v-model="info.stopSell" style="float: left;margin-right: 8px;margin-top: 8px;"></el-checkbox>
-            	<el-form-item label="车位详情默认图:" style="width: 91%;float: left;">
+				<el-radio v-model="info.stopSell" label="车位详情默认图:" style="float: left;margin-right: 8px;margin-top: 8px;" :disabled="ableSelect1"></el-radio>
+            	<el-form-item  style="width: 91%;float: left;">
                     <div class="pic-box">
                         <div class="upload_warp" >
                             <div class="upload_warp_left img-upload" @click="homeImg_files">
                                 <img :src="headImage" v-if="headImage" class="avatar mt0" style="width: 200px;">
                             </div>
                         </div>
-                        <input @change="homeImg_fileChange($event)" type="file" id="homeImg_upload_file" multiple style="display:none;"/>
+                        <input @change="homeImg_fileChange($event)" type="file" id="homeImg_upload_file" multiple style="display:none;" :disabled="ableSelect1"/>
                     </div>
                 </el-form-item>
                 <el-form-item label="车位列表默认图:" style="width: 91%;float: left;margin-left: 22px;">
@@ -147,20 +150,22 @@
                         <input @change="homeImg_fileChange1($event)" type="file" id="homeImg_upload_files" multiple style="display:none;"/>
                     </div>
                 </el-form-item>
-                <el-checkbox v-model="info.stopSells" style="float: left;margin-right: 8px;margin-top: 8px;"></el-checkbox>
-                <el-form-item label="车位实景图:" style="width: 91%;float: left;">
-                    <div class="pic-box" style="width: 100%;height:auto;overflow: hidden;">
-                        <div class="upload_warp">
-                        	<div class="upload_warp_left img-uploads" v-for="(item,index) in info.homeImg">
-                                <div class="upload_warp_img_div_del" @click="banner_fileDel(index)"></div>
-                                <img :src="item.img" v-if="item.img" class="avatar mt0">
-                            </div>
-                            <div class="upload_warp_left img-uploads" @click="homeImg_file">
-                                <img class="avatar mt0">
-                            </div>
-                        </div>
-                        <input @change="homeImg_fileChanges($event)" type="file" id="homeImg_upload_file" multiple style="display:none;"/>
-		            </div>
+				<el-radio v-model="info.stopSell" label="车位实景图:" style="float: left;margin-right: 8px;margin-top: 8px;" :disabled="ableSelect2"></el-radio>
+                <el-form-item  style="width: 91%;float: left;">
+                     <div class="pic-box" style="width: 100%;height:auto;overflow: hidden;">
+						<div class="pic-box" style="width: 100%;height:auto;overflow: hidden;">
+							<div class="upload_warp">
+								<div class="upload_warp_left img-uploads" v-for="(item,index) in info.homeImg">
+									<div class="upload_warp_img_div_del" @click="banner_fileDel(index)"></div>
+									<img :src="item.img" v-if="item.img" class="avatar mt0">
+								</div>
+								<div class="upload_warp_left img-uploads" @click="homeImg_file2">
+									<img class="avatar mt0">
+								</div>
+							</div>
+							<input @change="homeImg_fileChange2($event)" type="file" id="homeImg_upload_filess" multiple style="display:none;" :disabled="ableSelect2"/>
+						</div>
+					</div>
                 </el-form-item>
                 <el-form-item label-width="0px" style="width: 90%;float: left;margin-left: 30px;">上传图片文件（每一张图片命名样式为：区域-二级-三级+车位编号）</el-form-item>
                	
@@ -197,14 +202,18 @@
 	        		minSellPrice:'',
 	        		name:'',
 	        		sellStatus:''
-	        	},
+				},	
+				// 實景圖圖片			
+				trueFilesrc:'',
 	        	showFace:false,
 	        	level1Info:[],
 	        	level2Info:[],
 	        	level3Info:[],
 	        	tagIdsInfo:[],
 	        	typeList:[],
-	        	tableData:[],
+				tableData:[],
+				// 详情默认图
+				truckSpaceDetailImages:[],
 	        	info:{
 	        		stopSells:false,
 	        		stopSell:false,
@@ -216,10 +225,18 @@
 	        	//分页
 		       	currentPage: 1,//默认显示第一页
 		       	pagesize:20,//每页的数据
-		       	total:0,
+				total:0,
+				ableSelect1:false,
+				ableSelect2:false,
 	        }
-	    },
+		},
+		watch:{
+			"$route"(to,from){
+				conosle.log(to.path)
+			}
+		},
 	    created(){
+			
 	    	//渲染车位状态
 	    	this.$axios.post(request.testUrl+"/product/auth1/truckSpace/statusList")
 		    	.then(res=>{
@@ -234,18 +251,18 @@
 		            	this.level1Info=res.data.data
 		            }
 		    	})
-		    //渲染楼栋二级列表
+		    //渲染楼栋三级列表
 		    this.$axios.get(request.testUrl+"/product/auth1/TruckSpaceLevelThree/doSelectAllList")
 		    	.then(res=>{
 		            if(res.data.code==0){
-		            	this.level2Info=res.data.data
+		            	this.level3Info=res.data.data
 		            }
 		    	})
-		    //渲染楼栋三级列表
+		    //渲染楼栋二级列表
 		    this.$axios.get(request.testUrl+"/product/auth1/TruckSpaceLevelTwo/doSelectAllList")
 		    	.then(res=>{
 		            if(res.data.code==0){
-		            	this.level3Info=res.data.data
+		            	this.level2Info=res.data.data
 		            }
 		    	})
 		    //渲染车位标签列表
@@ -258,7 +275,8 @@
 		    //车位项目配置是否在前端展示车位标价
 		    this.save()
 		    //查询所有信息
-		    this.checked(1)
+			this.checked(1);
+			this.renderPic();
 	    },
 	    watch: {
 			'$route' (to, from) {
@@ -266,6 +284,20 @@
 			}
 		},
 	    methods:{ 
+			renderPic(){
+				//加载默认车位图片
+				this.$axios.get(request.testUrl+"/product/auth1/projectTruckSpaceConfig")
+				.then(res=>{
+					if(res.data.code==0){
+						let arr=[];
+						if(res.data.data!=null){
+							arr.push(res.data.data.listImage,res.data.data.detailImage)
+						}
+						this.truckSpaceDetailImages=arr;
+						// console.log(this.truckSpaceDetailImages)
+					}
+				})
+			},
 	    	//车位项目配置是否在前端展示车位标价
 	    	save(){
 			    this.$axios.get(request.testUrl+"/product/auth1/projectTruckSpaceConfig")
@@ -313,7 +345,7 @@
 		        		pageSize:this.pagesize,
 		        		level1:this.form.level1,
 		        		level2:this.form.level2,
-		        		level3:this.form.level3,
+		        		level:this.form.level3,
 		        		tagIds:this.form.tagIds,
 		        		lockStatus:this.form.lockStatus,
 		        		maxFloorPrice:this.form.maxFloorPrice,
@@ -331,11 +363,13 @@
 					if(res.data.code==0){
 						this.total = res.data.data.total
 						this.tableData=res.data.data.records
+						// console.log(this.tableData)
 						// facePrice sellPrice insideArea
 						this.tableData.forEach(item=>{
 							item.facePrice=item.facePrice==0?"":item.facePrice;
 							item.sellPrice=item.sellPrice==0?"":item.sellPrice;
 							item.insideArea=item.insideArea==0?"":item.insideArea;
+							item.truckSpaceDetailImages=this.truckSpaceDetailImages;
 						})
 					}else{
 						this.$message({
@@ -351,6 +385,7 @@
 	    	},
 			//表格全选
 	     	handleSelectionChange(val) {
+				//  console.log(val)
 	        	this.multipleSelection = val;
 	      	},
 	      	//新增车位
@@ -366,14 +401,24 @@
 			            	if(res.data.data!=null){
 			            		this.headImages=res.data.data.listImage
 			            		this.headImage=res.data.data.detailImage
-			            		this.info.stopSell=true	
+			            		this.info.stopSell="车位详情默认图:";
 			            	}
 			            }
 			    	})
 	      	},
 	      	//导入车位图保存按钮
 	      	saveInfo(){
-	      		if(this.info.stopSell==true){
+				console.log(this.info.stopSell)
+				if(this.info.stopSell==false){
+					this.$message({
+						type:'warning',
+						message:'请勾选上对应的按钮'
+					})
+					return ;
+				}
+	      		if(this.info.stopSell=="车位详情默认图:"){
+					//   alert('11111');
+					this.ableSelect2=true;
 	      			this.$axios({
 	      				method:'post',
 			        	url:request.testUrl+"/product/auth1/projectTruckSpaceConfig",
@@ -388,6 +433,8 @@
 								type: 'info',
 								message: "图片上传成功！"
 							});
+							this.reload()
+							
 						}else{
 							this.$message({
 								type: 'info',
@@ -395,7 +442,9 @@
 							});
 						}
 					})
-	      		}else if(this.info.stopSells==true){
+	      		}else if(this.info.stopSell=="车位实景图:"){
+					this.ableSelect1=true;
+					//   alert('22222');
 	      			this.revise=false;
 		      		this.reload()
 		      		this.checked(1)
@@ -403,43 +452,70 @@
 	      	},
 	      	//批量删除车位
 	      	delate(){
-      			let ids=[]
+				//存取出售状态
+				  let ids1=[]
+				//存取id值
+				  let ids=[]
 	    		let list=this.multipleSelection
 	    		for(let i in list){
+	    			ids1.push(list[i].sellStatusName)
 	    			ids.push(list[i].id)
-	    		}
+				}
+				// console.log(ids1,ids)
 	    		if(ids.length==0){
 	    			this.$message({
 						type: 'info',
-						message: '请选择要发布的车位！'
+						message: '请选择要删除的车位！'
 					});
 					return
-	    		}
-	      		this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-					confirmButtonText: '确定',
-					cancelButtonText: '取消',
-					type: 'warning'
-				}).then(() => {
-					this.$axios({
-			        	method:'post',
-			        	url:request.testUrl+"/product/auth1/truckSpace/bitchDelete",
-			        	data:ids
-					}).then(res=>{
-						if(res.data.code==0){
-							this.checked(1)
-						}else{
+				}
+				
+				let jugeArr=[];
+				console.log(ids1)
+				var bool=false;
+				if(ids1.indexOf('落位')!=-1){
+					bool=true
+				}
+				if(ids1.indexOf('认购')!=-1){
+					bool=true
+				}
+				if(ids1.indexOf('认购失效待处理')!=-1){
+					bool=true
+				}
+				console.log(bool)
+					if(bool){
+						this.$message({
+							type:'info',
+							message:'用户已对该车位发起操作,无法进行删除'
+						})
+						return ;
+					}else{
+						this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+						confirmButtonText: '确定',
+						cancelButtonText: '取消',
+						type: 'warning'
+					}).then(() => {
+						this.$axios({
+							method:'post',
+							url:request.testUrl+"/product/auth1/truckSpace/bitchDelete",
+							data:ids
+						}).then(res=>{
+							if(res.data.code==0){
+								this.checked(1)
+							}else{
+								this.$message({
+									type: 'info',
+									message: res.data.msg
+								});
+							}
+							})
+						}).catch(() => {
 							this.$message({
 								type: 'info',
-								message: res.data.msg
+								message: '已取消删除'
 							});
-						}
-					})
-				}).catch(() => {
-					this.$message({
-						type: 'info',
-						message: '已取消删除'
-					});
-				});
+						});
+					}	
 	      	},
 	      	//发布
 	      	release(){
@@ -679,8 +755,9 @@
 	                }
 	            })
 	        },
-	        //图片上传
+			//图片上传
 	        homeImg_uploadImage(filesrc){
+				this.trueFilesrc=filesrc;
 	            var param = new FormData(); // FormData 对象
 	            param.append("image", filesrc); // 文件对象
 	            this.$axios({
@@ -689,25 +766,23 @@
 	                data: param
 	            })
 	            .then(res => {
+	            	
 	                if(res.data.code==0){
+	                	console.log(res.data.data)
 						this.info.homeImg.push({img:res.data.data})
+						// console.log(this.info.homeImg)
 	                    this.$message({
-	                        type: 'info',
+	                        type: 'success',
 	                        message: "图片上传成功！"
-	                    }); 
-	                }else{
-	                	this.$message({
-	                        type: 'info',
-	                        message: res.data.msg
-	                    }); 
-	                }
+						}); 
+	                }  
 	            })
 	            .catch(error => {
 	            });
-	        },
+			},
+			
       		//删除当前上传的图片
 	        banner_fileDel(index){
-	        	
 	        	var param = new FormData(); // FormData 对象
 	            param.append("image", this.info.homeImg[index].img); // 文件对象
 	        	this.$axios({
@@ -763,10 +838,12 @@
 					//读取成功后的回调 
 					reader.onloadend = function() { 
 						let result = this.result; 
-						let img = new Image();img.src = result; 
+						let img = new Image();
+						img.src = result; 
 						img.onload = function() {
-							let data = self.compress(img);self.imgUrl = result; 
-							let blob = self.dataURItoBlob(data); 
+							let data = self.$handlePic.compress(img);
+							self.imgUrl = result; 
+							let blob = self.$handlePic.dataURItoBlob(data); 
 							var formData = new FormData();
 							formData.append("file", blob); 
 							let config = { 
@@ -827,8 +904,9 @@
 						let result = this.result; 
 						let img = new Image();img.src = result; 
 						img.onload = function() {
-							let data = self.compress(img);self.imgUrl = result; 
-							let blob = self.dataURItoBlob(data); 
+							let data = self.$handlePic.compress(img);
+							self.imgUrl = result; 
+							let blob = self.$handlePic.dataURItoBlob(data); 
 							var formData = new FormData();
 							formData.append("file", blob); 
 							let config = { 
@@ -853,8 +931,51 @@
 					};
 				}
 			},
-	        
-	        
+			//实景图
+			homeImg_file2() {
+	            document.getElementById('homeImg_upload_filess').click()
+			},
+	        homeImg_fileChange2(el) {
+	            if (!el.target.files[0].size) return;
+	            this.homeImg_fileList2(el.target);
+	            el.target.value = ''
+	        },
+	        homeImg_fileList2(fileList) {
+				let files = fileList.files;
+	            for (let i = 0; i < files.length; i++) {
+	                //判断是否为文件夹
+	                if (files[i].type != '') {
+	                    this.homeImg_uploadImage1(files[i]);  
+	                } else {
+	                    //文件夹处理
+	                    this.homeImg_folders(fileList.items[i]);
+	                }
+	            }
+			},
+			homeImg_uploadImage1(filesrc){
+				this.trueFilesrc=filesrc;
+	            var param = new FormData(); // FormData 对象
+	            param.append("image", filesrc); // 文件对象
+	            this.$axios({
+	                method: "post",
+	                url: request.testUrl+"/product/auth1/truckSpace/batchDetailImage",
+	                data: param
+	            })
+	            .then(res => {
+	            	
+	                if(res.data.code==0){
+	                	console.log(res.data.data)
+						this.info.homeImg.push({img:res.data.data})
+						console.log(this.info.homeImg)
+	                    this.$message({
+	                        type: 'success',
+	                        message: "图片上传成功！"
+						}); 
+	                }  
+	            })
+	            .catch(error => {
+	            });
+	        },
 	        //文件夹处理
 	        homeImg_folders(files) {
 	            let _this = this;
@@ -868,42 +989,6 @@
 	                }
 	            })
 	        },
-	        
-			
-			
-			// 压缩图片 
-			compress(img) { 
-				let canvas = document.createElement("canvas"); 
-				let ctx = canvas.getContext("2d"); 
-				let initSize = img.src.length; 
-				let width = img.width; 
-				let height = img.height;
-				canvas.width = width;
-				canvas.height = height; 
-				// 铺底色 
-				ctx.fillStyle = "#fff";
-				ctx.fillRect(0, 0, canvas.width, canvas.height);
-				ctx.drawImage(img, 0, 0, width, height); 
-				//进行最小压缩 
-				let ndata = canvas.toDataURL("image/jpeg", 0.3); 
-				return ndata;
-			},
-			// base64转成bolb对象 
-			dataURItoBlob(base64Data) { 
-				var byteString; 
-				if (base64Data.split(",")[0].indexOf("base64") >= 0)
-					byteString = atob(base64Data.split(",")[1]); 
-				else byteString = unescape(base64Data.split(",")[1]); 
-				var mimeString = base64Data
-				.split(",")[0]
-				.split(":")[1]
-				.split(";")[0]; 
-				var ia = new Uint8Array(byteString.length); 
-				for (var i = 0; i < byteString.length; i++) {
-					ia[i] = byteString.charCodeAt(i);
-				} 
-				return new Blob([ia], { type: mimeString });
-			}, 
 	      	//分页功能
            	// 初始页currentPage、初始每页数据数pagesize和数据data
 		    handleCurrentChange(currentPage) {
@@ -965,5 +1050,15 @@
 	}
 	.el-table_1_column_9 {
 	    color: rgb(96, 98, 102)!important;
+	}
+	.upload_warp_img_div_del {
+		position: absolute;
+		width: 12px;
+		background-size: cover;
+		background-position: center;
+		z-index: 11;
+		height: 24px;
+		margin-left: 82px;
+		left: -81px!important;
 	}
 </style>

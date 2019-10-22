@@ -80,6 +80,11 @@
                                 title: '项目公告',
                                 path:'/项目公告'
                             },
+                             {
+                                index: '项目证书',
+                                title: '项目证书',
+                                path:'/项目证书'
+                            },
                         ]
                     },
                     {
@@ -134,6 +139,11 @@
                                 index: '楼栋图片管理',
                                 title: '楼栋图片管理',
                                 path:'/楼栋图片管理'
+                            },
+                            {
+                                index: '分布图管理',
+                                title: '分布图管理',
+                                path:'/分布图管理'
                             },
                         ]
                     },
@@ -226,21 +236,22 @@
                                        title:'活动列表',
                                        path:'/活动列表'
                                    },
-                                   {
-                                       index:'查看活动',
-                                       title:'查看活动',
-                                       path:'/查看活动'
-                                   },
-                                   {
-                                       index:'活动车位列表',
-                                       title:'活动车位列表',
-                                       path:'/活动车位列表'
-                                   },
                                 //    {
-                                //        index:'设置图片',
-                                //        title:'设置图片',
-                                //        path:'/设置图片'
+                                //        index:'查看活动',
+                                //        title:'查看活动',
+                                //        path:'/查看活动'
                                 //    },
+                                //    {
+                                //        index:'活动车位列表',
+                                //        title:'活动车位列表',
+                                //        path:'/活动车位列表'
+                                //    },
+                                   {
+                                       index:'设置活动详情图',
+                                       title:'设置活动详情图',
+                                       path:'/设置活动详情图'
+                                   },
+                                
                                ]
                            },
                            {
@@ -254,8 +265,8 @@
                                ]
                            },
                            {
-                               index:'评团活动',
-                               title:'评团活动',
+                               index:'拼团活动',
+                               title:'拼团活动',
                                subs:[
                                    {
                                        index:'暂未开放',
@@ -286,7 +297,7 @@
 	        	}
 			}).then(res=>{
 				if(res.data.code==0){
-					this.roleId=res.data.data.roleId
+					this.roleId=res.data.data.roleId ||1
 				}
 				if(this.roleId==1){
 					this.items

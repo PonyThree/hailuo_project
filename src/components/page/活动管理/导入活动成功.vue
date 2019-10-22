@@ -38,7 +38,8 @@
 	        	form:{},
 	        	tableInfo:[{address:'jhdf '}],
 	        	show:false,
-	        	size:this.$route.query.size
+				size:this.$route.query.size,
+				id:this.$route.query.id
 	        }
 	    },
 	    created(){
@@ -46,7 +47,9 @@
 	    methods:{
 	    	//查看车位
 	    	check(){
-	    		this.$router.push({ path: '/查看活动导入'})
+	    		this.$router.push({ path: '/查看活动导入',query:{
+						id:this.id
+					}})
 	    	},
 	    }
 	}

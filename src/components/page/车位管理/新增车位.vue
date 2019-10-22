@@ -19,7 +19,7 @@
 								    <el-option label="所有状态" value=""></el-option>
 								    <el-option v-for="item in level2Info" :label="item.name" :value="item.id" :key="item.id"></el-option>
 							    </el-select>
-							    <el-select v-model="form.level3" placeholder="请选择状态" style="width: 130px;">
+								<el-select v-model="form.level3" placeholder="请选择状态" style="width: 130px;">
 								    <el-option label="所有状态" value=""></el-option>
 								    <el-option v-for="item in level3Info" :label="item.name" :value="item.id" :key="item.id"></el-option>
 							    </el-select>
@@ -182,7 +182,7 @@
 		    // safari
 		    window.pageYOffset = 0
 	    	//渲染区域列表
-		    this.$axios.get(request.testUrl+"/product/auth1/truckSpaceArea/doSelectAllList")
+		    this.$axios.get(request.testUrl+"/product/auth1/truckSpaceArea/selectAllList")
 		    	.then(res=>{
 		            if(res.data.code==0){
 		            	this.level1Info=res.data.data
@@ -192,14 +192,14 @@
 		    this.$axios.get(request.testUrl+"/product/auth1/TruckSpaceLevelThree/doSelectAllList")
 		    	.then(res=>{
 		            if(res.data.code==0){
-		            	this.level2Info=res.data.data
+		            	this.level3Info=res.data.data
 		            }
 		    	})
 		    //渲染楼栋三级列表
 		    this.$axios.get(request.testUrl+"/product/auth1/TruckSpaceLevelTwo/doSelectAllList")
 		    	.then(res=>{
 		            if(res.data.code==0){
-		            	this.level3Info=res.data.data
+		            	this.level2Info=res.data.data
 		            }
 		    	})
 		    //渲染车位标签列表
@@ -239,7 +239,7 @@
 						type: 'info',
 						message: '底价需低于表价'
 					});
-					this.form1.floorPrice=''
+					this.form1.facePrice=''
 					return
 	    		}
 	    	},
@@ -359,7 +359,8 @@
 						message: '面积或金额不能为负数！'
 					});
 					return
-	    		}
+				}
+				console.log(this.form.level2+"]]]]]"+this.form.level3)
 	    		this.$refs.form.validate((valid) => {
 					if (valid) {
 			    		let ids=this.listInfo.map(e=>({id:e.id}))

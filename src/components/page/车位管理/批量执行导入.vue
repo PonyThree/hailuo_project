@@ -36,7 +36,7 @@
 				
 				<div class="clear"></div>
 				
-				<div style="width: 80%;margin: 20px auto;">
+				<div style="width: 68%;margin: 20px auto;">
 					<div style="width: 100%;line-height: 40px;font-size: 18px;">不可导入车位信息列表</div>
 					<!--表格-->
 					<el-table :data="tableInfo" border style="width:91.5%;margin: 0 auto;">
@@ -106,14 +106,27 @@
 	    	//下一步
 	    	nextStep(){
 //	    		console.log(res.data.data)
-//	    		if(this.ableRespDtos.length>0){
-					this.$router.push({ path: '/批量设置信息',query:{size:this.ableRespDtos.length}})
-//				}else{
-//					this.$message({
-//						type: 'info',
-//						message: '导入车位失败，请重新导入！'
-//					});
-//				}
+	    		if(this.ableRespDtos.length>0){
+					this.$axios({
+				        	method:'post',
+				        	url:request.testUrl+"/product/auth1/truckSpace/bitchAdd",
+				        	data:this.ableRespDtos
+						}).then(res=>{
+							if(res.data.code==0){
+								this.$router.push({ path: '/批量设置信息',query:{size:this.ableRespDtos.length}})
+							}else{
+								this.$message({
+									type: 'info',
+									message: '导入车位失败，请重新导入！'
+								});
+							}
+					})
+				}else{
+					this.$message({
+						type: 'info',
+						message: '导入车位失败，请重新导入！'
+					});
+				}
 	    	},
 	    	//返回重新上传
 	    	returnBack(){

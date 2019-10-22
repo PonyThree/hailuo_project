@@ -14,11 +14,11 @@
 					<el-row style="width: 100%;height:50px;border-top: 1px solid #dcd3ef;background:gainsboro;margin-top: 60px;">
 						<el-col :span="8">
 							<div style="margin-top: 8px;">
-								<span style="margin-left: 50px;">车位层数：</span>
+								<!-- <span style="margin-left: 50px;">车位层数：</span>
 								<el-select v-model="level2" placeholder="请选择状态" style="width: 130px;">
 								    <el-option label="所有状态" value=""></el-option>
 								    <el-option v-for="item in typeList" :label="item.name" :value="item.id"></el-option>
-							    </el-select>
+							    </el-select> -->
 							</div>
 						</el-col>
 						<el-col :span="8">
@@ -29,8 +29,8 @@
 						</el-col>
 						<el-col :span="8">
 							<div style="margin-top: 8px;">
-								<el-button class="aa1" style="float: right;margin-right: 50px;" @click="importImg">导入车位详情图</el-button>
-								<el-button class="aa1" style="float: right;margin-right: 10px;" @click="switchs">切换展示</el-button>
+								<!-- <el-button class="aa1" style="float: right;margin-right: 50px;" @click="importImg">导入车位详情图</el-button> -->
+								<!-- <el-button class="aa1" style="float: right;margin-right: 10px;" @click="switchs">切换展示</el-button> -->
 							</div>
 						</el-col>
 					</el-row>
@@ -40,15 +40,15 @@
 						<div style="width: 100%;margin: 40px auto 20px;" v-if="loginType === 'username'">
 							<div style="width: 96%;margin: 0 auto 50px;">
 								<div style="width: 90%;float: left;">
-									<span class="pieces" @click="downs" :class="{actives:color==true}">全部</span>
-									<span class="pieces" v-for="item,index in dongList" @click="down(index)" :class="{active:idlist.indexOf(item.id)!=-1}">{{item.name}}</span>
+									<!-- <span class="pieces" @click="downs" :class="{actives:color==true}">全部</span>
+									<span class="pieces" v-for="(item,index) in dongList" @click="down(index)" :class="{active:idlist.indexOf(item.id)!=-1}">{{item.name}}</span> -->
 								</div>
-								<el-button class="aa1" style="float: right;margin-right: 10px;" @click="checked(1)">查询</el-button>
+								<!-- <el-button class="aa1" style="float: right;margin-right: 10px;" @click="checked(1)">查询</el-button> -->
 							</div>
 							<div class="clear"></div>
 							<div style="width: 95.5%;height: auto;overflow: hidden;margin: 40px auto 10px;">
 								<el-button class="aa1" @click="selectAll(1)" >删除选中车位</el-button>
-								<el-button  type="primary" style="margin-left: 10px;" @click="selectAlls(2)">选择所有导入车位</el-button>
+								<el-button  type="primary" style="margin-left: 10px;" @click="toggleRowSelection(2)">选择所有导入车位</el-button>
 							</div>
 							<!--表格-->
 							<el-table ref="multipleTable" :data="tableParking" tooltip-effect="dark" @selection-change="handleSelectionChange" border style="width: 95.5%;margin: 0 auto;">
@@ -77,13 +77,13 @@
 						<!--查看车位-->
 						<div style="width: 100%;margin: 40px auto 20px;" v-else>
 							<div style="width: 96%;margin: 0 auto 20px;">
-								<span class="pieces" @click="downs1" :class="{actives:color1==true}">全部</span>
+								<!-- <span class="pieces" @click="downs1" :class="{actives:color1==true}">全部</span>
 								<span class="pieces" v-for="item,index in dongList1" @click="down1(index)" :class="{active:idlist1.indexOf(item.id)!=-1}">{{item.name}}</span>
-								<el-button class="aa1" style="float: right;margin-right: 10px;" @click="checkeds">查询</el-button>
+								<el-button class="aa1" style="float: right;margin-right: 10px;" @click="checkeds">查询</el-button> -->
 							</div>
 							<div style="width: 95.5%;height: auto;overflow: hidden;margin: 40px auto 10px;">
 								<el-button class="aa1" @click="deleted">删除选中车位</el-button>
-								<el-button  type="primary" style="margin-left: 10px;" @click="selectAlls(2)">选择所有导入车位</el-button>
+								<el-button  type="primary" style="margin-left: 10px;" @click="toggleRowSelection(2)">选择所有导入车位</el-button>
 							</div>
 							<!--表格-->
 							
@@ -97,7 +97,7 @@
 						<el-form :model="form">
 							<div style="width: 100%;height: auto;overflow: hidden;">
 								
-				           		<el-form-item label="车位标签:">
+				           		<!-- <el-form-item label="车位标签:">
 					                <el-select v-model="form.tagType" placeholder="请选择状态" style="width: 200px;" @change="touchs">
 									    <el-option label="所有状态" value="all"></el-option>
 									    <el-option v-for="item in typeList1" :label="item.typeName" :value="item.id"></el-option>
@@ -107,13 +107,13 @@
 								    		<span v-show="false">{{item.id}}</span>
 								    	</div>
 								    </div>
-								</el-form-item>
-								<el-form-item label="已添加标签:"> 
+								</el-form-item> -->
+								<!-- <el-form-item label="已添加标签:"> 
 									<el-checkbox-group v-model="tagIds" style="display: inline-block;">
 								    	<el-checkbox v-for="item in listInfo" :label="item.id" :key="item.name">{{item.name}}</el-checkbox> 
 								    </el-checkbox-group>
 									<a style="margin-left: 50px;color: #409EFF;" @click="deletes(tagIds)">删除</a>
-								</el-form-item>
+								</el-form-item> -->
 				           	</div>
 				           	<div style="width: 100%;height: auto;overflow: hidden;">
 				           		<el-form-item label="发布:" style="width: 30%;float: left;">
@@ -131,12 +131,12 @@
 					
 					<div style="width: 15%;margin:60px auto 260px;">
 						<el-button class="aa1" style="display: block;float: left;" @click="determine">确定</el-button>
-						<el-button class="aa1" style="display: block; float: right;" @click="returnBack">下一步</el-button>
+						<el-button class="aa1" style="display: block; float: right;" @click="returnBack" :disabled="cantOption">下一步</el-button>
 					</div>
 				</div>
 				
 				<!--导入车位图片弹出框-->
-				<el-dialog title="导入车位详情图" :visible.sync="revise" width="27%">
+				<!-- <el-dialog title="导入车位详情图" :visible.sync="revise" width="27%">
 		            <el-form ref="info" :model="info" label-width="100px" >
 		                <el-form-item label="导入车位图片:">
 		                    <div class="pic-box" style="width: 100%;height:auto;overflow: hidden;">
@@ -158,7 +158,7 @@
 		            	<el-button type="primary" @click="saveInfo">保存</el-button>
 		                <el-button @click="revise=false">取 消</el-button> 
 		            </span>
-		        </el-dialog>
+		        </el-dialog> -->
 				
 			</div>
 		</div>
@@ -171,6 +171,7 @@
 		name:'check-parking',
 		data(){
 	        return {
+				cantOption:true,
 	        	labelPosition:'right',
 	        	seen:false,//显示隐藏
 	        	loginType : 'username',//切换
@@ -345,7 +346,8 @@
 					this.currentPage=currentPage;
 				}
 				
-	    		var params = new URLSearchParams();	
+				var params = new URLSearchParams();	
+				console.log(this.idlist,this.level2)
               	params.append('level3', this.idlist);
                 params.append('level2', this.level2);
 				this.$axios.post(request.testUrl + "/product/auth1/truckSpace/importExcelSelectPage?current=" + this.currentPage + "&pageSize=" + this.pagesize, params)
@@ -395,13 +397,13 @@
 	    	},
 	    	
 	    	//导入车位弹出窗
-      		importImg(){
-      			this.revise=true;
-      		},
+      		// importImg(){
+      		// 	this.revise=true;
+      		// },
       		//导入车位图片保存
-      		saveInfo(){
-      			this.revise=false;
-      		},
+      		// saveInfo(){
+      		// 	this.revise=false;
+      		// },
       		
 	    	//全选
 	    	handleSelectionChange(val) {
@@ -449,20 +451,42 @@
 				});
       		},
       		//全选所有选中id
-      		selectAlls(e){
+      		toggleRowSelection(e){
 				this.nums=e
-				console.log(this.nums)
-      			// this.$axios.post(request.testUrl+"/product/auth1/truckSpace/importExcelSelectList")
-				// 	.then(res=>{
-		    	// 		if(res.data.code==0){
-		    	// 			this.allListid=res.data.data
-		    	// 		}else{
-		    	// 			this.$message({
-				//                 type: 'info',
-				//                 message: res.data.msg,
-			    //         	});
-		    	// 		}
-				// })
+				// console.log(this.tableParking)
+				if(e==2){
+					if(this.tableParking.length>0){
+						this.tableParking.forEach(item=>{
+						this.$refs.multipleTable.toggleRowSelection(item);
+						})
+					}
+					else{
+						this.$message({
+							type:'warning',
+							message:'暂无数据选择'
+						})
+						return ;
+					}
+					
+				}else{
+					this.$refs.multipleTable.clearSelection();
+				}
+      			this.$axios.post(request.testUrl+"/product/auth1/truckSpace/importExcelSelectList")
+					.then(res=>{
+		    			if(res.data.code==0){
+							this.allListid=res.data.data
+							this.$message({
+				                type: 'info',
+				                message: '操作成功',
+			            	});
+							
+		    			}else{
+		    				this.$message({
+				                type: 'error',
+				                message: res.data.msg,
+			            	});
+		    			}
+				})
       		},
       		//表格中单个删除
       		cancel(index){
@@ -506,24 +530,37 @@
       		},
       		//另个版本删除
       		deleted(){
-      			this.$axios({
-			        	method:'post',
-			        	url:request.testUrl+"/product/auth1/truckSpace/bitchDelete",
-			        	data:this.chooselist
-					}).then(res=>{
-						if(res.data.code==0){
-							this.checkeds()
-							this.$message({
-								type: 'success',
-								message: '删除成功！'
-							});
-						}else{
-							this.$message({
-								type: 'info',
-								message: res.data.msg
-							});
-						}
-					})
+				let that=this;
+				that.$confirm('此操作将删除该文件,是否继续?','提示',{
+					confirmButtonText:'确定',
+					cancelButtonText:'取消',
+					type:'warning'
+				}).then(()=>{
+					that.$axios({
+							method:'post',
+							url:request.testUrl+"/product/auth1/truckSpace/bitchDelete",
+							data:that.chooselist
+						}).then(res=>{
+							if(res.data.code==0){
+								that.checkeds()
+								that.$message({
+									type: 'success',
+									message: '删除成功！'
+								});
+							}else{
+								that.$message({
+									type: 'info',
+									message: res.data.msg
+								});
+							}
+						})
+				}).catch(()=>{
+					that.$message({
+						type: 'info',
+						message: '已取消删除'
+					});
+				})
+      			
       		},
       		//车位标签选择
       		touchs(){
@@ -571,6 +608,7 @@
       		},
       		//确定
       		determine(){
+				
       			let ids=[]
 				if(this.multipleSelection.length!=0){
 					ids=this.multipleSelection.map(e=>(e.id))
@@ -583,6 +621,7 @@
 					});
 					return
 				}
+				this.cantOption=false;
                 let idList=this.listInfo.map(e=>(e.id))
 				this.$axios({
 			        	method:'post',

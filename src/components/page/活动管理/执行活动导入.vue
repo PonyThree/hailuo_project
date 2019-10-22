@@ -74,66 +74,78 @@
 	        	tableInfo:[],
 	        	show:false,
 	        	ableRespDtos:[],
-	        	errorRespDtos:[]
+				errorRespDtos:[],
+				id:this.$route.query.id
 	        }
 	    },
 	    created(){
-	    	this.$axios.post(request.testUrl+"/product/activityTruckSpace/auth1/truckSpace/getActivityExcelSelect")
+	    	this.renderData();
+	    },
+	    watch: {
+			'$route'(to,from){
+				if(to.path=="/执行活动导入"){
+					// this.$axios.post(request.testUrl+"/product/auth1/activityTruckSpace/getActList")
+	        		// .then(res=>{
+	        		// 	if(res.data.code==0){
+	        		// 		this.ableRespDtos=res.data.data.ableRespDtos
+	        		// 		this.errorRespDtos=res.data.data.errorRespDtos
+	        		// 		this.tableInfo=res.data.data.errorRespDtos
+					// 	}
+					// })
+					this.renderData();
+				}
+			}	
+		},
+	    methods:{
+			renderData(){
+				// var params=new URLSearchParams();
+				// params.append("current",1)
+				// params.append("pages",10)
+				this.$axios.post(request.testUrl+"/product/auth1/activityTruckSpace/getActivityExcelSelect")
         		.then(res=>{
         			if(res.data.code==0){
+						// console.log(res.data.data)
         				this.ableRespDtos=res.data.data.ableRespDtos
         				this.errorRespDtos=res.data.data.errorRespDtos
         				this.tableInfo=res.data.data.errorRespDtos
 					}
         		})
-	    },
-	    watch: {
-			'$route'(to,from){
-				if(to.path=="/执行活动导入"){
-					this.$axios.post(request.testUrl+"/product/activityTruckSpace/auth1/truckSpace/getActivityExcelSelect")
-	        		.then(res=>{
-	        			if(res.data.code==0){
-	        				this.ableRespDtos=res.data.data.ableRespDtos
-	        				this.errorRespDtos=res.data.data.errorRespDtos
-	        				this.tableInfo=res.data.data.errorRespDtos
-						}
-	        		})
-				}
-			}	
-		},
-	    methods:{
+			},
 	    	//错误模版提示
 	    	prompt(){
 	    		this.show=true;
 	    	},
 	    	//下一步
 	    	nextStep(){
+				// console.log(this.ableRespDtos)
 	    		if(this.ableRespDtos.length>0){
 		    		this.$axios({
-				        	method:'post',
-				        	url:request.testUrl+"/product/auth1/truckSpace/bitchAdd",
-				        	data:this.ableRespDtos
-						}).then(res=>{
-							if(res.data.code==0){
-								this.$router.push({ path: '/导入活动成功',query:{size:res.data.data}})
-							}else{
-								this.$message({
-									type: 'info',
-									message: '导入车位失败，请重新导入！'
-								});
+						method:'post',
+						url:request.testUrl+"/product/auth1/activityTruckSpace/addList",
+						data:JSON.stringify(
+							{
+							'actId':this.id,
+							'dtos':this.ableRespDtos
 							}
-						})
-				}else{
-					this.$message({
-						type: 'info',
-						message: '导入车位失败，请重新导入！'
-					});
+						)
+					}).then(res=>{
+						if(res.data.code==0){
+							this.$router.push({ path: '/导入活动成功',query:{size:res.data.data,id:this.id}})
+						}else{
+							this.$message({
+								type: 'info',
+								message: res.data.msg
+							});
+						}
+					})
 				}
 	    	},
 	    	//返回重新上传
 	    	returnBack(){
 //	    		this.reload()
-	    		this.$router.push({ path: '/导入活动车位'})
+	    		this.$router.push({ path: '/导入活动车位',query:{
+					id:this.$route.query.id
+				}})
 	    	},
 	    }
 	}

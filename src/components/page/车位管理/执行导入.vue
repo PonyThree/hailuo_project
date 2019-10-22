@@ -78,6 +78,7 @@
 	        }
 	    },
 	    created(){
+			// 
 	    	this.$axios.post(request.testUrl+"/product/auth1/truckSpace/importExcelResult")
         		.then(res=>{
         			if(res.data.code==0){
@@ -122,7 +123,7 @@
 									message: '导入车位失败，请重新导入！'
 								});
 							}
-						})
+					})
 				}else{
 					this.$message({
 						type: 'info',
@@ -133,7 +134,7 @@
 	    	//返回重新上传
 	    	returnBack(){
 //	    		this.reload()
-	    		this.$router.push({ path: '/导入活动车位'})
+	    		this.$router.push({ path: '/导入车位'})
 	    	},
 	    }
 	}

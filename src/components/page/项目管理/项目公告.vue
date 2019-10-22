@@ -14,7 +14,7 @@
     </div>
     <el-table :data="gonggaoTabe" border :header-cell-style="{background:'#dcd3ef'}"  header-row-class-name="tableHead">
         <el-table-column prop="num" label="序号" align="center" width="100">
-            <template scope="scope">
+            <template slot-scope="scope">
                 <span>{{scope.$index+1}}</span>
             </template>
         </el-table-column>
@@ -23,7 +23,7 @@
                 <img :src="scope.row.imageUrl"  style="width: 200px;height: 100px;"/>
             </template>
         </el-table-column>
-        <el-table-column prop="id" label="" align="center" v-show:"1==2"></el-table-column>
+        <el-table-column prop="id" label="" align="center" v-show="1==2"></el-table-column>
         <el-table-column prop="content" label="展示文字" align="center"></el-table-column>
         <el-table-column prop="createTime" label="上传时间" align="center"></el-table-column>
         <el-table-column prop="caozuo" label="操作" align="center">
@@ -149,24 +149,36 @@ export default {
     },
     //删除
     deleteBanner(id){
-        var params=new URLSearchParams();
-        params.append('id',id);
-        this.$axios.post(request.testUrl+"/project/auth1/notice/doDeleteNotice",params).then(res=>{
-                console.log(res.data)
-                if(res.data.code==0){
-                    // this.info1=res.data.data;
-                    this.$message({
-                        type:'success',
-                        message:'删除成功'
-                    })
-                    this.reload();
-                }else{
-                    this.$message({
-                        type:'error',
-                        message:res.data.msg
-                    })
-                }
+        this.$confirm('此操作将会删除该文件,是否继续?','提示',{
+            confirmButtonText:'确定',
+            cancelButtonText:'取消',
+            type:'warning'
+        }).then(()=>{
+            var params=new URLSearchParams();
+            params.append('id',id);
+            this.$axios.post(request.testUrl+"/project/auth1/notice/doDeleteNotice",params).then(res=>{
+                    console.log(res.data)
+                    if(res.data.code==0){
+                        // this.info1=res.data.data;
+                        this.$message({
+                            type:'success',
+                            message:'删除成功'
+                        })
+                        this.reload();
+                    }else{
+                        this.$message({
+                            type:'error',
+                            message:res.data.msg
+                        })
+                    }
+            })
+        }).catch(()=>{
+            this.$message({
+                type:'info',
+                message:'已取消删除'
+            })
         })
+        
     },
     //   修改之前加载数据
     editData(id){
@@ -325,9 +337,9 @@ export default {
                 console.log(result);
                 img.src = result; 
                 img.onload = function() {
-                    let data = self.compress(img);
+                    let data = self.$handlePic.compress(img);
                     self.imgUrl = result; 
-                    let blob = self.dataURItoBlob(data); 
+                    let blob = self.$handlePic.dataURItoBlob(data); 
                     var formData = new FormData();
                     formData.append("file", blob); 
                     let config = { 
@@ -352,39 +364,6 @@ export default {
             };
         }
     },
-    // 压缩图片 
-    compress(img) { 
-        let canvas = document.createElement("canvas"); 
-        let ctx = canvas.getContext("2d"); 
-        let initSize = img.src.length; 
-        let width = img.width; 
-        let height = img.height;
-        canvas.width = width;
-        canvas.height = height; 
-        // 铺底色 
-        ctx.fillStyle = "#fff";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(img, 0, 0, width, height); 
-        //进行最小压缩 
-        let ndata = canvas.toDataURL("image/jpeg", 0.3); 
-        return ndata;
-    },
-    // base64转成bolb对象 
-    dataURItoBlob(base64Data) { 
-        var byteString; 
-        if (base64Data.split(",")[0].indexOf("base64") >= 0)
-            byteString = atob(base64Data.split(",")[1]); 
-        else byteString = unescape(base64Data.split(",")[1]); 
-        var mimeString = base64Data
-        .split(",")[0]
-        .split(":")[1]
-        .split(";")[0]; 
-        var ia = new Uint8Array(byteString.length); 
-        for (var i = 0; i < byteString.length; i++) {
-            ia[i] = byteString.charCodeAt(i);
-        } 
-        return new Blob([ia], { type: mimeString });
-    }, 
     //分页功能
     // 初始页currentPage、初始每页数据数pagesize和数据data
     handleCurrentChange(page) {

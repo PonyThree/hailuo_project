@@ -28,7 +28,7 @@
 						<div style="display: block;width:100%;line-height: 45px;">上传填好的车位信息表</div>
 						<div style="display: block;width:100%;line-height: 15px;color: gray;font-size: 12px;">文件后缀名必须为xls或xlsx(即Excel格式)</div>
 						<div style="display: block;width:100%;line-height: 35px;font-size: 14px;">
-							<el-upload action="111" :before-upload="beforeUpload">上传文件</el-upload>
+							<el-upload action="string" :before-upload="beforeUpload">上传文件</el-upload>
 						</div>
 					</div>
 				</div>
@@ -62,9 +62,27 @@
 			            if(res.data.code==0){
 			            	this.$message({
 		                        type: 'info',
-		                        message: "文件上传成功！"
+		                        message: "文件上传成功,正在验证,请等待..."
 		                 	}); 
-		                 	this.off=true
+							 this.off=true
+							 this.$axios.post(request.testUrl+"/product/auth1/truckSpace/volidateImportExcel")
+								.then(res=>{
+									if(res.data.code==0){
+										this.ableRespDtos=res.data.data.ableRespDtos
+										this.errorRespDtos=res.data.data.errorRespDtos
+										this.tableInfo=res.data.data.errorRespDtos
+										this.$message({
+											type:'success',
+											message:'验证成功'
+										})
+									}else{
+										this.$message({
+											type:'error',
+											message:res.data.msg
+										})
+									}
+							})
+							 
 			            }else{
 			            	this.$message({
 		                        type: 'info',

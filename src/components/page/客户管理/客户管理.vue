@@ -39,6 +39,9 @@
 		<div class="table">
 			<!--按钮-->
 			<ul class="listTwo">
+				<li>
+					<el-button type="primary" size="small" @click="exportOrder" style="float:right;">导出</el-button>
+				</li>
 				<li style="margin-right: 40px;"><el-button  type="primary" @click="addTag">新增客户</el-button></li>
 				<!-- 白名单控制按钮 -->
 				<li><el-button  type="primary" @click="cancleWhitePeo(0)">取消白名单用户</el-button></li>
@@ -82,7 +85,8 @@
 				</el-table-column>
 				<el-table-column label="操作" align="center">
 					<template slot-scope="scope">
-                        <a style="display: block; text-align: center; margin-bottom:5px;color: #409EFF;font-size: 14px;" @click="modifyTable(scope.$index)" v-if="scope.row.comeType=='线下'">修改</a>
+						<!-- v-if="scope.row.comeType=='线下'" -->
+                        <a style="display: block; text-align: center; margin-bottom:5px;color: #409EFF;font-size: 14px;" @click="modifyTable(scope.$index)" >修改</a>
                         <a style=" display: block; color: #409EFF;font-size: 14px;margin-top:5px;" @click="derail(scope.$index)" v-if="scope.row.comeType=='线上'&&scope.row.forbidden==1">禁用</a>
                         <a style=" display: block; color: red;font-size: 14px;margin-top:5px;" @click="derails(scope.$index)" v-if="scope.row.comeType=='线上'&&scope.row.forbidden==0">解禁</a>
 	                </template>
@@ -117,14 +121,14 @@
 	        		endTime:'',
 	        	},
 	        	listType:[],
-	        	tableData:[{}],
+	        	tableData:[],
 	        	//分页
 		       	currentPage: 1,//默认显示第一页
 		       	pagesize:10,//每页的数据
 		       	total:0,
 		       	name:''
 	        }
-	    },
+		},
 	    created(){
 			this.searchData();
 	    	this.name=this.$route.query.name
@@ -202,27 +206,32 @@
 				this.$axios.post(request.testUrl+'/project/auth1/projectUser/findProjectUserList',params)
 				.then(res=>{
 					if(res.data.code==0){
-						this.total = res.data.data.total
-						this.tableData=res.data.data.records
-						for(var i=0;i<this.tableData.length;i++){
-						if(this.tableData[i].joinTime!=''&& this.tableData[i].joinTime!=undefined){
-							var start=this.tableData[i].joinTime;//获取开始时间
-							var d = new Date(start);    //根据时间戳生成的时间对象
-							var startDate = (d.getFullYear()) + "-" + 
-							           (d.getMonth() + 1) + "-" +
-							           (d.getDate()) + " " + 
-							           (d.getHours()) + ":" + 
-							           (d.getMinutes()) + ":" + 
-							           (d.getSeconds());      
-							this.tableData[i].joinTime=startDate;//赋值
-							// this.tableData[i].forbidden=false;
-							if(this.tableData[i].forbidden==1){
-								this.tableData[i].forbidden=true;
-							}else{
-								this.tableData[i].forbidden=false;
-							}
+						if(res.data.data!=null){
+							this.total = res.data.data.total
+								this.tableData=res.data.data.records
+								for(var i=0;i<this.tableData.length;i++){
+								if(this.tableData[i].joinTime!=''&& this.tableData[i].joinTime!=undefined){
+									var start=this.tableData[i].joinTime;//获取开始时间
+									var d = new Date(start);    //根据时间戳生成的时间对象
+									var startDate = (d.getFullYear()) + "-" + 
+											(d.getMonth() + 1) + "-" +
+											(d.getDate()) + " " + 
+											(d.getHours()) + ":" + 
+											(d.getMinutes()) + ":" + 
+											(d.getSeconds());      
+									this.tableData[i].joinTime=startDate;//赋值
+									// this.tableData[i].forbidden=false;
+									if(this.tableData[i].forbidden==1){
+										this.tableData[i].forbidden=true;
+									}else{
+										this.tableData[i].forbidden=false;
+									}
+								}
+							}	
+						}else{
+							this.tableData=[];
 						}
-					}	
+						
 					}
 				})
 	      	},
@@ -396,6 +405,36 @@
 						message:'没有数据操作失败！'
 					})
 				}
+			},
+			// 导出订单
+			exportOrder(){
+				this.$axios({
+					method:'post',
+					url:request.testUrl+"/order/auth1/order/excelUserInfo",
+					headers:{
+						'content-type':'application/x-www-form-urlencoded'
+					},
+					responseType:'blob'
+					}).then(res=>{
+						console.log(res)
+						if(!res) return 
+						let blob=new Blob([res.data],{type:'application/vnd.ms-excel;charset=utf8'})
+						var downloadElement=document.createElement('a');
+						//创建下载的链接
+						var href=window.URL.createObjectURL(blob)
+						downloadElement.href=href;
+						//下载文件名
+						downloadElement.download="订单数据excel.xls";
+						document.body.appendChild(downloadElement);
+						// 点击下载
+						downloadElement.click();
+						// 下载完移除
+						document.body.removeChild(downloadElement);
+						// 释放掉blob对象
+						window.URL.revokeObjectURL(href);
+					}).catch(error=>{
+						console.log(error)
+				})
 			}
 	    }
 	}

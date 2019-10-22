@@ -45,7 +45,7 @@
 			<el-table-column prop="expireTime" label="待执行订单有效期" align="center" width="200">
 				<template slot-scope="scope">
                     <span style="color: red;cursor: pointer;" v-if="scope.row.expire==1">{{scope.row.expireTime}}</span>
-	                    <span v-else @click="change(scope.$index)" >{{scope.row.expireTime}}</span>
+	                <span v-else @click="change(scope.$index,scope.row.buyType)" >{{scope.row.expireTime}}</span>
                 </template>
 			</el-table-column>
 			<el-table-column prop="moneyStatusName" label="金额状态" align="center" width="100"></el-table-column>
@@ -185,10 +185,18 @@
 				})
 	      	},
 			//订单过期修改
-	    	change(index) {
-			    this.info.expireTime=this.tableData[index].expireTime
-			    this.info.id=this.tableData[index].id
-			    this.visible = true;
+	    	change(index,buyType) {
+				if(buyType!=3){
+					this.info.expireTime=this.tableData[index].expireTime
+					this.info.id=this.tableData[index].id
+					this.visible = true;
+				}else{
+					this.$message({
+						type:'warning',
+						message:'认购完成不能进行订单时间操作'
+					})
+				}
+			    
 		    },
 	    	//修改过期时间保存
 	    	save(){

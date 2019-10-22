@@ -566,13 +566,8 @@ export default {
     //新增员工保存
     savePeople() {
       let text = this.merchantForm;
-      if(text.password==""){
-        delete text.password;
-      }
-      if(text.username==""){
-        delete text.username;
-      }
-      delete text.confirmpwd;
+      console.log(this.merchantForm.confirmpwd==this.merchantForm.password)
+     
       if(this.merchantForm.confirmpwd!=this.merchantForm.password){
         this.$message({
           type:'warning',
@@ -580,12 +575,23 @@ export default {
         })
         return;
       }
+      if(text.password==""){
+        delete text.password;
+      }
+      if(text.username==""){
+        delete text.username;
+      }
+      delete text.confirmpwd;
       this.$axios
         .post(request.testUrl + "/project/auth1/employee/add", text)
         .then(res => {
           if (res.data.code == 0) {
-            this.resh();
             this.activeName=localStorage.getItem('activeName')||'first';
+            this.resh();
+            // this.$nextTick()
+            this.$nextTick(()=>{
+              this.$refs.merchantForm.resetFields();
+            })
           }else{
           	this.$message({
 							type:'info',

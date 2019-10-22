@@ -42,22 +42,22 @@
 							<el-button class="button" style="margin-right: 5px;" @click="addList" v-if="num==index">新增</el-button>
 							<div class="left">
 								<el-form-item label="选择车位 :">
-									<el-select v-model="domain.spaceAreaId" placeholder="请选择区域" style="width: 150px;">
+									<el-select v-model="domain.spaceAreaId" placeholder="请选择区域" style="width: 150px;" disabled>
 									    <el-option v-for="item in level1Info" :label="item.name" :value="item.id" :key="item.id"></el-option>
 								    </el-select>
-								    <el-select v-model="domain.spaceFloorId" placeholder="请选择层" style="width: 150px;">
+								    <el-select v-model="domain.spacetruckSpaceLevelTwoId" placeholder="请选择栋" style="width: 150px;" disabled>
 									    <el-option v-for="item in level2Info" :label="item.name" :value="item.id" :key="item.id"></el-option>
 								    </el-select>
-								    <el-select v-model="domain.spacetruckSpaceLevelTwoId" placeholder="请选择栋" style="width: 150px;">
+								    <el-select v-model="domain.spacetruckSpaceLevelThreeId" placeholder="请选择层" style="width: 150px;" disabled>
 									    <el-option v-for="item in level3Info" :label="item.name" :value="item.id" :key="item.id"></el-option>
 								    </el-select>
-									<el-input v-model="domain.truckSpaceName" placeholder="请输入车位名称" style="width: 200px;margin-top: 5px;"></el-input>
+									<el-input v-model="domain.truckSpaceName" placeholder="请输入车位名称" style="width: 200px;margin-top: 5px;" disabled></el-input>
 								</el-form-item>
 								<el-form-item label="购买状态 :" >
-									<el-select v-model="domain.payStatus" placeholder="请选择活动区域" style="width: 150px;">
-									    <el-option label="认购" value="2" key="2"></el-option>
-									    <el-option label="购买完成" value="3" key="3"></el-option>
-									    <el-option label="预订单" value="6" key="6"></el-option>
+									<el-select v-model="domain.payStatus" placeholder="请选择活动区域" style="width: 150px;" disabled>
+									    <el-option label="认购" :value="2" key="2"></el-option>
+									    <el-option label="购买完成" :value="3" key="3"></el-option>
+									    <el-option label="预订单" :value="6" key="6"></el-option>
 								   </el-select>
 								</el-form-item>
 							</div>
@@ -66,7 +66,7 @@
 									<el-input v-model="domain.payMoney" placeholder="请输入支付金额" style="width: 200px;" disabled></el-input>
 								</el-form-item>
 								<el-form-item label="签约时间 :">
-									 <el-date-picker v-model="domain.payTime" type="datetime" placeholder="选择日期时间" style="width: 200px;"></el-date-picker>
+									 <el-date-picker v-model="domain.payTime" type="datetime" placeholder="选择日期时间" style="width: 200px;" disabled></el-date-picker>
 								</el-form-item>
 							</div>
 						</el-form-item>
@@ -132,24 +132,24 @@
 					}
 		        })
 		    //渲染区域列表
-		    this.$axios.get(request.testUrl+"/product/auth1/truckSpaceArea/doSelectAllList")
+		    this.$axios.get(request.testUrl+"/product/auth1/truckSpaceArea/selectAllList")
 		    	.then(res=>{
 		            if(res.data.code==0){
 		            	this.level1Info=res.data.data
 		            }
 		    	})
-		    //渲染楼栋二级列表
+		    //渲染楼栋三级列表
 		    this.$axios.get(request.testUrl+"/product/auth1/TruckSpaceLevelThree/doSelectAllList")
 		    	.then(res=>{
 		            if(res.data.code==0){
-		            	this.level2Info=res.data.data
+		            	this.level3Info=res.data.data
 		            }
 		    	})
-		    //渲染楼栋三级列表
+		    //渲染楼栋二级列表
 		    this.$axios.get(request.testUrl+"/product/auth1/TruckSpaceLevelTwo/doSelectAllList")
 		    	.then(res=>{
 		            if(res.data.code==0){
-		            	this.level3Info=res.data.data
+		            	this.level2Info=res.data.data
 		            }
 		    	})
 		   	//渲染初始数据
@@ -198,18 +198,18 @@
 				            	this.level1Info=res.data.data
 				            }
 				    	})
-				    //渲染楼栋二级列表
+				    //渲染楼栋三级列表
 				    this.$axios.get(request.testUrl+"/product/auth1/TruckSpaceLevelThree/doSelectAllList")
 				    	.then(res=>{
 				            if(res.data.code==0){
-				            	this.level2Info=res.data.data
+				            	this.level3Info=res.data.data
 				            }
 				    	})
-				    //渲染楼栋三级列表
+				    //渲染楼栋二级列表
 				    this.$axios.get(request.testUrl+"/product/auth1/TruckSpaceLevelTwo/doSelectAllList")
 				    	.then(res=>{
 				            if(res.data.code==0){
-				            	this.level3Info=res.data.data
+				            	this.level2Info=res.data.data
 				            }
 				    	})
 				   	//渲染初始数据

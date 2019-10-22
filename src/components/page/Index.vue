@@ -11,7 +11,7 @@
                 </div>  -->
                 <!-- 头部信息 -->
                 <div class="title">
-                    <span>平台后端</span>
+                    <span>项目后端</span>
                     <div class='head'>
                         <div class="headName" @click="showLogout">
                             <span>{{name}}</span>
@@ -79,6 +79,11 @@ export default {
                     desc:'项目权限管理',
                     jumpTxt:'前往管理'
                 },
+                {
+                    title:'活动列表管理',
+                    desc:'活动列表管理',
+                    jumpTxt:'前往活动列表管理'
+                },
             ],
             list:[]
         }
@@ -99,12 +104,14 @@ export default {
 		        		username:localStorage.getItem('account'),
 		        		password:localStorage.getItem('password'),
 		        	}
-			}).then(res=>{
+			}).then(res=>{ 
 						if(res.data.code==0){
-							that.roleId=res.data.data.roleId
-							if(that.roleId==1){
-								that.projectList
+							that.roleId=res.data.data.roleId ||1
+							if(that.roleId=='1'){
+                                that.projectList
+                             
 							}else{
+                
 								that.projectList=[]
 								for(var i=0;i<res.data.data.menuList.length;i++){
 									that.projectList.push({
@@ -134,7 +141,7 @@ export default {
         },
         jumpPage(i){
             if(this.roleId==1){
-                console.log(i);
+                // console.log(i);
             	if(i=='项目管理'){
 	                this.$router.push('/项目信息');
 	            }
@@ -155,6 +162,9 @@ export default {
 	            }
 	             if(i=='权限管理'){
 	                this.$router.push('/角色管理');
+                }
+                if(i=='活动列表管理'){
+	                this.$router.push('/活动列表');
 	            }
             }else{
             	for(var j=0;j<this.projectList.length;j++){
@@ -178,6 +188,9 @@ export default {
 			                this.$router.push('/'+this.projectList[j].menuTwoList[0].name);
 			            }
 			             if(i=='权限管理'){
+			                this.$router.push('/'+this.projectList[j].menuTwoList[0].name);
+                        }
+                        if(i=='活动列表管理'){
 			                this.$router.push('/'+this.projectList[j].menuTwoList[0].name);
 			            }
 					}

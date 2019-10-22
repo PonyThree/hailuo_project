@@ -17,7 +17,7 @@
 								<span style="margin-left: 50px;">车位层数：</span>
 								<el-select v-model="level2" placeholder="请选择">
 									<el-option label="所有状态" value=""></el-option>
-			                   		<el-option v-for="item in typeList" :label="item.name" :value="item.id"></el-option>
+			                   		<el-option v-for="item in typeList" :label="item.name" :value="item.id" :key="item.id"></el-option>
 							    </el-select>
 							</div>
 						</el-col>
@@ -97,7 +97,7 @@
 				</div>
 				
 				<!--导入车位图片弹出框-->
-				<el-dialog title="新增banner" :visible.sync="revise" width="30%">
+				<el-dialog title="导入车位详情图" :visible.sync="revise" width="30%">
 		            <el-form ref="info" :model="info" label-width="100px" style="padding-left: 0;">
 		                <el-form-item label="导入车位图片:">
 		                    <div class="pic-box" style="width: 100%;height:auto;overflow: hidden;">
@@ -163,7 +163,7 @@
 			            	this.typeList=res.data.data
 			            }
 			    	})
-			//渲染车位楼层
+			//渲染车位楼栋
 			this.$axios.get(request.testUrl+"/product/auth1/TruckSpaceLevelTwo/doSelectAllList")
 			    	.then(res=>{
 			            if(res.data.code==0){
@@ -394,24 +394,37 @@
       		},
       		//另个版本删除
       		deleted(){
-      			this.$axios({
+				let that=this;
+				that.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+					confirmButtonText: '确定',
+					cancelButtonText: '取消',
+					type: 'warning'
+				}).then(() => {
+					that.$axios({
 			        	method:'post',
 			        	url:request.testUrl+"/product/auth1/truckSpace/bitchDelete",
 			        	data:this.chooselist
-					}).then(res=>{
+						}).then(res=>{
 						if(res.data.code==0){
-							this.checkeds()
-							this.$message({
+							that.checkeds()
+							that.$message({
 								type: 'success',
 								message: '删除成功！'
 							});
 						}else{
-							this.$message({
+							that.$message({
 								type: 'info',
 								message: res.data.msg
 							});
 						}
 					})
+				}).catch(() => {
+					that.$message({
+						type: 'info',
+						message: '已取消删除'
+					});
+				});
+      			
       		},
 			//返回车位管理
 			determine(){
@@ -471,7 +484,7 @@
 	                    this.$message({
 	                        type: 'success',
 	                        message: "图片上传成功！"
-	                    }); 
+						}); 
 	                }  
 	            })
 	            .catch(error => {

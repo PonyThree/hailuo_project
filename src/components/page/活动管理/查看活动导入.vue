@@ -12,33 +12,33 @@
 				</el-steps>
 				<div class="columns" style="border: none;">
 					<el-row style="width: 100%;height:50px;border-top: 1px solid #dcd3ef;margin-top: 40px;background:gainsboro;">
-						<el-col :span="8">
+						<!-- <el-col :span="8">
 							<div style="margin-top: 8px;">
 								<span style="margin-left: 50px;">车位层数：</span>
-								<el-select v-model="level2" placeholder="请选择">
+								<el-select v-model="level3" placeholder="请选择">
 									<el-option label="所有状态" value=""></el-option>
 			                   		<el-option v-for="item in typeList" :label="item.name" :value="item.id"></el-option>
 							    </el-select>
 							</div>
-						</el-col>
-						<el-col :span="8">
-							<div style="margin-top: 12px;">
-								<span style="margin-left: 180px;margin-right: 10px;">已导入车位</span>
+						</el-col> -->
+						<el-col :span="24">
+							<div style="margin-top: 12px;text-align:center;">
+								<span style="margin-right: 10px;">已导入车位</span>
 								<!--<a style="color: #409EFF;font-size: 12px;" @click="clickView">点击查看</a>-->
 							</div>
 						</el-col>
-						<el-col :span="8">
+						<!-- <el-col :span="8">
 							<div style="margin-top: 8px;">
 								<el-button class="aa1" style="float: right;margin-right: 50px;" @click="importImg">导入车位详情图</el-button>
 								<el-button class="aa1" style="float: right;margin-right: 10px;" @click="switchs">切换展示</el-button>
 							</div>
-						</el-col>
+						</el-col> -->
 					</el-row>
 					
 					<div>
 						<!--查看车位-->
 						<div style="width: 100%;margin: 40px auto 120px;" v-if="loginType === 'username'">
-							<div style="width: 96%;margin: 0 auto 20px;">
+							<!-- <div style="width: 96%;margin: 0 auto 20px;">
 								<div style="width: 100%;float: left;">
 									<span class="pieces" @click="downs" :class="{actives:color==true}">全部</span>
 									<span class="pieces" v-for="item,index in dongList" @click="down(index)" :class="{active:idlist.indexOf(item.id)!=-1}">{{item.name}}</span>
@@ -49,40 +49,40 @@
 							<div style="width: 95.5%;height: auto;overflow: hidden;margin: 40px auto 10px;">
 								<el-button class="aa1" @click="selectAll">全选删除</el-button>
 								
-							</div>
+							</div> -->
 							<!--表格-->
 							<el-table ref="multipleTable" :data="tableParking" tooltip-effect="dark" @selection-change="handleSelectionChange" border style="width: 95.5%;margin: 0 auto;" :header-cell-style="{background:'#dcd3ef',color:'#606266'}"  header-row-class-name="tableHead">
-								<el-table-column type="selection" align="center"></el-table-column>
+								<!-- <el-table-column type="selection" align="center"></el-table-column> -->
 								<el-table-column type="index" label="序号" width="60" align="center"></el-table-column>
-								<el-table-column prop="name" label="车位编号" align="center"></el-table-column>
+								<el-table-column prop="name" label="车位名称" align="center"></el-table-column>
 								<el-table-column prop="location" label="车位位置" align="center"></el-table-column>
-								<el-table-column prop="insideArea" label="面积（m²）" align="center"></el-table-column>
-								<el-table-column prop="facePrice" label="表价（元）" align="center"></el-table-column>
-								<el-table-column prop="floorPrice" label="底价（元）" align="center"></el-table-column>
-								<el-table-column label="操作" align="center">
+								<el-table-column prop="favorablePrice" label="优惠金额" align="center"></el-table-column>
+								<el-table-column prop="floorPrice" label="车位底价（元）" align="center"></el-table-column>
+								<el-table-column prop="facePrice" label="车位表价（元）" align="center"></el-table-column>
+								<!-- <el-table-column label="操作" align="center">
 									<template slot-scope="scope">
 		                        		<a style="color: #409EFF;font-size: 14px;" @click="cancel(scope.$index)">删除</a>
 		                        	</template>
-								</el-table-column>
+								</el-table-column> -->
 							</el-table>
 							
 							<!--分页器-->
-							<el-pagination background  @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[20, 100, 300, 500, 1000]" :page-size="pagesize"  :total="total" layout="total, sizes, prev, pager, next,jumper">
-							</el-pagination>
+							<!-- <el-pagination background  @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[5,10,20, 50, 100]" :page-size="pageSize"  :total="total" layout="total, sizes, prev, pager, next,jumper">
+							</el-pagination> -->
 							
 						</div>
 						
 						
 						<!--查看车位-->
 						<div style="width: 100%;margin: 40px auto 120px;" v-else>
-							<div style="width: 96%;margin: 0 auto 20px;">
+							<!-- <div style="width: 96%;margin: 0 auto 20px;">
 								<span class="pieces" @click="downs1" :class="{actives:color1==true}">全部</span>
 								<span class="pieces" v-for="item,index in dongList1" @click="down1(index)" :class="{active:idlist1.indexOf(item.id)!=-1}">{{item.name}}</span>
 								<el-button class="aa1" style="float: right;margin-right: 10px;" @click="checkeds">查询</el-button>
 							</div>
 							<div style="width: 95.5%;height: auto;overflow: hidden;margin: 40px auto 10px;">
 								<el-button class="aa1" @click="deleted()">删除</el-button>
-							</div>
+							</div> -->
 							<!--表格-->
 							<ul style="width: 94%;height:auto;overflow:hidden;margin: 40px auto;cursor: pointer;">
 								<li class="square" v-for="item,index in list" @click="choose(index)" :class="{active5:chooselist.indexOf(item.id)!=-1}">{{item.name}}</li>
@@ -91,7 +91,7 @@
 					</div >
 					
 					<div style="width: 15%;margin:120px auto 200px;">
-						<el-button class="aa1" style="display: block;margin-left: 54px;" @click="determine">返回车位管理</el-button>
+						<el-button class="aa1" style="display: block;margin-left: 54px;" @click="determine">返回活动列表</el-button>
 <!--						<el-button class="aa1" style="display: block; float: right;" @click="returnBack">返回上一步</el-button>-->
 					</div>
 				</div>
@@ -137,6 +137,7 @@
 	        	color:true,
 	        	color1:false,
 	        	level2:'',
+	        	level3:'',
 				typeList:[],
 				dongList:[],
 				dongList1:[],
@@ -148,11 +149,12 @@
 				revise:false,
 				//分页
 		       	currentPage: 1,//默认显示第一页
-		       	pagesize:20,//每页的数据
+		       	pageSize:10,//每页的数据
 		       	total:0,
 		       	idlist:[],
 		       	idlist1:[],
-		       	chooselist:[],
+				chooselist:[],
+				id:this.$route.query.id
 	        }
 	    },
 	    created(){
@@ -160,10 +162,11 @@
 	    	this.$axios.get(request.testUrl+"/product/auth1/TruckSpaceLevelThree/doSelectAllList")
 			    	.then(res=>{
 			            if(res.data.code==0){
+							// console.log(res.data.data)
 			            	this.typeList=res.data.data
 			            }
 			    	})
-			//渲染车位楼层
+			// 渲染车位楼栋
 			this.$axios.get(request.testUrl+"/product/auth1/TruckSpaceLevelTwo/doSelectAllList")
 			    	.then(res=>{
 			            if(res.data.code==0){
@@ -176,34 +179,34 @@
 			            	this.dongList1=res.data.data
 			            }
 			    	})
-			this.checked(1);
-			this.checkeds()
+			this.checked();
+			console.log(this.$route.query.id)
 	    },
 	    watch: {
 			'$route' (to, from) {
-				if(to.path=="/查看导入"){
+				if(to.path=="/查看活动导入"){
 					//渲染车位层数
 			    	this.$axios.get(request.testUrl+"/product/auth1/TruckSpaceLevelThree/doSelectAllList")
 					    	.then(res=>{
 					            if(res.data.code==0){
 					            	this.typeList=res.data.data
 					            }
-					    	})
-					//渲染车位楼层
+					})
+					// 渲染车位楼层
 					this.$axios.get(request.testUrl+"/product/auth1/TruckSpaceLevelTwo/doSelectAllList")
 					    	.then(res=>{
 					            if(res.data.code==0){
 					            	this.dongList=res.data.data
 					            }
-					    	})
+					})
 					this.$axios.get(request.testUrl+"/product/auth1/TruckSpaceLevelTwo/doSelectAllList")
 					    	.then(res=>{
 					            if(res.data.code==0){
 					            	this.dongList1=res.data.data
 					            }
-					    	})
-					this.checked(1)
-					this.checkeds()
+					})
+					this.checked()
+					// this.checkeds()
 				}
 			
 			}
@@ -259,36 +262,45 @@
 	    	switchs(){
 	    		if(this.loginType=='username'){
                     this.loginType='email'
-                    this.checkeds()
+                    // this.checkeds()
                 }
                 else{
                     this.loginType='username'
                 }
 	    	},
-	    	//第一个版本查询
-	    	checked(currentPage){
-	    		if(currentPage==undefined){
-					currentPage=this.currentPage
-				}else{
-					this.currentPage=currentPage;
-				}
+			checked() {
+				// var params=new URLSearchParams()
+				// if(currentPage==undefined){
+				// 	params.append('current',this.currentPage)
+				// }else{
+				// 	params.append('current',currentPage)
+				// }
 				
-	    		var params = new URLSearchParams();	
-              	params.append('level3', this.idlist);
-                params.append('level2', this.level2);
-				this.$axios.post(request.testUrl + "/product/auth1/truckSpace/importExcelSuccessResult?current=" + this.currentPage + "&pageSize=" + this.pagesize, params)
-					.then(res => {
-						if(res.data.code == 0) {
-							this.total = res.data.data.total
-							this.tableParking = res.data.data.records
-						} else {
+				// params.append('pages',this.pageSize)
+				var params=new URLSearchParams();
+				params.append('actId',this.id)
+				this.$axios.post(request.testUrl+"/product/auth1/activityTruckSpace/selImport",params).then(res=>{
+					if(res.data.code==0){
+							if(res.data.data.length>0){
+							console.log(res.data.data)
+							res.data.data.forEach(item=>{
+								item.location=item.level1Name+"-"+item.level2Name+"-"+item.level3Name
+							})
+							this.tableParking=res.data.data;
+							// this.total=res.data.data.total;
 							this.$message({
-								type: 'info',
-					            message: res.data.msg,
-				            });
-				    	}
-				    })
-	    	},
+								type:'success',
+								message:'查询成功'
+							})
+							}
+						}else{
+							this.$message({
+							type:'error',
+							message:res.data.msg
+							})
+						}
+				})
+			},
 	    	//导入车位弹出窗
       		importImg(){
       			this.revise=true;
@@ -360,22 +372,22 @@
 				});
       		},
       		//另个版本查看
-      		checkeds(){
-      			var params = new URLSearchParams();	
-              	params.append('level3', this.idlist1);
-                params.append('level2', this.level2);			
-                this.$axios.post(request.testUrl+"/product/auth1/truckSpace/importExcelSuccessResultAll",params)
-					.then(res=>{
-		    			if(res.data.code==0){
-		    				this.list=res.data.data
-		    			}else{
-		    				this.$message({
-				                type: 'success',
-				                message: res.data.msg,
-			            	});
-		    			}
-		    		})
-      		},
+      		// checkeds(){
+      		// 	var params = new URLSearchParams();	
+            //   	params.append('level3', this.idlist1);
+            //     params.append('level2', this.level2);			
+            //     this.$axios.post(request.testUrl+"/product/auth1/truckSpace/importExcelSuccessResultAll",params)
+			// 		.then(res=>{
+		    // 			if(res.data.code==0){
+		    // 				this.list=res.data.data
+		    // 			}else{
+		    // 				this.$message({
+			// 	                type: 'success',
+			// 	                message: res.data.msg,
+			//             	});
+		    // 			}
+		    // 		})
+      		// },
       		choose(index){
       			let chooselist=this.chooselist
 	    		let id= this.list[index].id
@@ -390,29 +402,41 @@
       		},
       		//另个版本删除
       		deleted(){
-      			this.$axios({
-			        	method:'post',
-			        	url:request.testUrl+"/product/auth1/truckSpace/bitchDelete",
-			        	data:this.chooselist
-					}).then(res=>{
-						if(res.data.code==0){
-							this.checkeds()
-							this.$message({
-								type: 'success',
-								message: '删除成功！'
-							});
-						}else{
-							this.$message({
-								type: 'info',
-								message: res.data.msg
-							});
-						}
+				this.$confirm('此操作将删除该文件,是否继续?','提示',{
+					confirmButtonText:'确定',
+					cancelButtonText:'取消',
+					type:'warning'
+				}).then(()=>{
+					this.$axios({
+							method:'post',
+							url:request.testUrl+"/product/auth1/truckSpace/bitchDelete",
+							data:this.chooselist
+						}).then(res=>{
+							if(res.data.code==0){
+								this.checkeds()
+								this.$message({
+									type: 'success',
+									message: '删除成功！'
+								});
+							}else{
+								this.$message({
+									type: 'info',
+									message: res.data.msg
+								});
+							}
 					})
+				}).catch(()=>{
+					this.$message({
+						type: 'info',
+						message: '已取消删除'
+					});
+				})
+      			
       		},
 			//返回车位管理
 			determine(){
 				this.reload()
-				this.$router.push({ path: '/车位管理'})
+				this.$router.push({ path: '/活动列表'})
 			},
       		//图片上传
 			homeImg_file() {
@@ -494,13 +518,13 @@
       		
       		//分页功能
            	// 初始页currentPage、初始每页数据数pagesize和数据data
-		    handleCurrentChange(currentPage) {
-		        this.checked(currentPage);
-		    },
-            handleSizeChange(size){
-            	this.pagesize = size; //每页下拉显示数据
-            	this.checked(this.currentPage);
-            },
+		    // handleCurrentChange(currentPage) {
+		    //     this.checked(currentPage);
+		    // },
+            // handleSizeChange(size){
+            // 	this.pageSize = size; //每页下拉显示数据
+            // 	this.checked(this.currentPage);
+            // },
 	    }
 	}
 </script>

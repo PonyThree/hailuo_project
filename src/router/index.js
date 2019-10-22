@@ -53,6 +53,11 @@ export default new Router({
                     meta: { title: '项目公告' }
                 },
                 {
+                    path: '/项目证书',
+                    component: resolve => require(['../components/page/项目管理/项目证书.vue'], resolve),
+                    meta: { title: '项目证书' }
+                },
+                {
                     path: '/前端车位展示信息',
                     component: resolve => require(['../components/page/车位管理/前端车位展示信息.vue'], resolve),
                     meta: { title: '前端车位展示信息' }
@@ -121,7 +126,17 @@ export default new Router({
                 {
                     path: '/车位管理',
                     component: resolve => require(['../components/page/车位管理/车位管理.vue'], resolve),
-                    meta: { title: '车位管理' }
+                    meta: { 
+                        title: '车位管理' ,
+                        keepAlive: false // 不需要缓存
+                    }
+                },
+                {
+                    path: '/分布图管理',
+                    component: resolve => require(['../components/page/车位管理/分布图管理.vue'], resolve),
+                    meta: { 
+                        title: '分布图管理' ,
+                    }
                 },
                 {
                     path: '/新增车位',
@@ -303,6 +318,12 @@ export default new Router({
                     component:resolve=>require(['../components/page/活动管理/导入活动车位.vue'],resolve),
                     meta:{title:'导入活动车位'}
                 },
+                // 设置活动详情图
+                {
+                    path:'/设置活动详情图',
+                    component:resolve=>require(['../components/page/活动管理/设置活动详情图.vue'],resolve),
+                    meta:{title:'设置活动详情图'}
+                },
                 {
                     path:'/执行活动导入',
                     component:resolve=>require(['../components/page/活动管理/执行活动导入.vue'],resolve),
@@ -319,9 +340,9 @@ export default new Router({
                     meta:{title:'查看活动导入'}
                 },
                 {
-                    path:'/添加车位',
+                    path:'/添加活动车位',
                     component:resolve=>require(['../components/page/活动管理/addParking.vue'],resolve),
-                    meta:{title:'添加车位'}
+                    meta:{title:'添加活动车位'}
                 },
                 {
                     path:'/楼栋图片管理',

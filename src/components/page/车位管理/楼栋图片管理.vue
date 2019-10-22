@@ -14,16 +14,17 @@
         :data="treeData"
         node-key="id"
         empty-text="暂无数据"
-        default-expand-all
+        :default-expand-all="false"
         ref="tree"
         @node-click="nodeClick"
         :accordion="true"
         :check-strictly="true"
         :expand-on-click-node="false">
-        <span class="custom-tree-node" slot-scope="{ node, treeData }">
+        <span class="custom-tree-node" slot-scope="{ node}">
           <span>{{ node.label }}</span>
           <span>
-            <el-button type="text" size="mini" @click="insertPic(node)">编辑</el-button>
+            <!-- <el-button type="text" size="mini" @click="insertPic(node)">编辑</el-button> -->
+            <a @click="insertPic(node)" style="font-size:14px;color:#409EFF;">编辑</a>
           </span>
         </span>
       </el-tree>
@@ -37,7 +38,7 @@
         <!-- <el-form-item label="图片描述:" prop="description">
           <el-input v-model="info.description" placeholder="请输入图片描述"></el-input>
         </el-form-item> -->
-        <el-form-item label="banner图片:">
+        <el-form-item label="编辑楼栋图片:">
           <div class="pic-box">
             <div class="upload_warp">
               <div class="upload_warp_left img-upload" @click="homeImg_file">
@@ -70,12 +71,15 @@
 <script>
 var obj;
 export default {
+  inject:['reload'],
+  name:'buildPicMan',
   data() {
     return {
       bool:'',
       editCheckId:'',
       imgUrl:'',
       show: false,
+      freshDuge:false,
       info:{},
       buildingTable: [],
       //区层栋信息
@@ -99,10 +103,42 @@ export default {
 					}
     };
   },
+  // mounted(){
+  //   this.renderData();
+  // },
+  watch:{
+    "$route"(to,from){
+      console.log(from,to);
+      if(to.path=="/楼栋图片管理"){
+        // this.freshDuge=true;
+        // if(this.freshDuge){
+        //   this.renderData()
+        //   this.reload()
+        //   var lock=setTimeout(()=>{
+        //     this.freshDuge=false;
+        //     clearTimeout(lock)
+        //   },1000)
+        // }
+        this.$router.go(0)
+        
+      }
+    }
+  },
   created() {
-    this.renderData();
+    this.$nextTick(()=>{
+      this.renderData();
+    })
+    // this.reload();
   },
   computed:{
+  },
+  watch:{
+    $route(to,from){
+      console.log(to)
+    }
+  },
+  activated(){
+    this.renderData();
   },
   methods: {
     // 格式化数据
@@ -127,18 +163,19 @@ export default {
             })
           })
         })
+        // this.$set(this.data,"treeData",JSON.stringify(arr))
         this.treeData=JSON.parse(JSON.stringify(arr))
       })
     },
     //编辑
     insertPic(node) {
-      // console.log(node)
+      console.log(node)
       obj={};
-      if(!node.parent.id){
+      if(node.level==1){
         // 当前id值
         obj.leveId=node.data.id;
       }else{
-        if(!node.parent.parent.parent){
+        if(node.level==2){
           obj.leveId=node.parent.data.id;
           obj.truckSpaceLevelTwoId=node.data.id;
         }else{
@@ -154,7 +191,7 @@ export default {
         //上两级id
         // console.log(node.parent.parent.parent.data[0].id)
       }
-      console.log(obj)
+      // console.log(obj)
       // 编辑之前加载数据
       this.$axios({
         method:'post',
@@ -243,9 +280,9 @@ export default {
           console.log(result);
           img.src = result; 
           img.onload = function() {
-            let data = self.compress(img);
+            let data = self.$handlePic.compress(img);
             self.imgUrl = result; 
-            let blob = self.dataURItoBlob(data); 
+            let blob = self.$handlePic.dataURItoBlob(data); 
             var formData = new FormData();
             formData.append("file", blob); 
             let config = { 
@@ -271,39 +308,6 @@ export default {
         };
       }
     },
-    // 压缩图片 
-    compress(img) { 
-      let canvas = document.createElement("canvas"); 
-      let ctx = canvas.getContext("2d"); 
-      let initSize = img.src.length; 
-      let width = img.width; 
-      let height = img.height;
-      canvas.width = width;
-      canvas.height = height; 
-      // 铺底色 
-      ctx.fillStyle = "#fff";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(img, 0, 0, width, height); 
-      //进行最小压缩 
-      let ndata = canvas.toDataURL("image/jpeg", 0.3); 
-      return ndata;
-    },
-    // base64转成bolb对象 
-    dataURItoBlob(base64Data) { 
-      var byteString; 
-      if (base64Data.split(",")[0].indexOf("base64") >= 0)
-        byteString = atob(base64Data.split(",")[1]); 
-      else byteString = unescape(base64Data.split(",")[1]); 
-      var mimeString = base64Data
-      .split(",")[0]
-      .split(":")[1]
-      .split(";")[0]; 
-      var ia = new Uint8Array(byteString.length); 
-      for (var i = 0; i < byteString.length; i++) {
-        ia[i] = byteString.charCodeAt(i);
-      } 
-      return new Blob([ia], { type: mimeString });
-    }, 
     // 节点被点击时的回调
     nodeClick(item,node,self){
       if(node==true){//点击未选中
@@ -326,6 +330,17 @@ export default {
 };
 </script>
 <style>
+.el-button--primary {
+  color: white!important;
+  background-color: #9768e5 !important;
+  border-color: #9768e5!important;
+}
+.el-button--text {
+    color: #409EFF!important;
+    background: 0 0;
+    padding-left: 0;
+    padding-right: 0;
+}
 .info {
   width: 98%;
   margin: 40px auto;

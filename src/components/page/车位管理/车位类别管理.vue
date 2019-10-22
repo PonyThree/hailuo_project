@@ -40,9 +40,9 @@
 				<el-table-column prop="caozuo" label="操作" align="center">
 					<template slot-scope="scope">
 	                        <a style="color: #409EFF;font-size: 14px;" v-if="tableData[scope.$index].ableModify!=0" @click="modifyTable(scope.$index)" >修改</a>
-	                        <a style="color: #409EFF;font-size: 14px;" v-else >不可修改</a>
+	                        <a style="color: #cccccc;font-size: 14px;" v-else>不可修改</a>
 	                        <a style="margin-left: 20px;color: #409EFF;font-size: 14px;" v-if="tableData[scope.$index].ableModify!=0" @click="deleteTable(scope.$index)">删除</a>
-	                        <a style="margin-left: 20px;color: #409EFF;font-size: 14px;" v-else>不可删除</a>
+	                        <a style="margin-left: 20px;color: #cccccc;font-size: 14px;" v-else>不可删除</a>
 	                </template>
 				</el-table-column>
 			</el-table>

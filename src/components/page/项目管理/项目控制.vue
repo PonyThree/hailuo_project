@@ -894,7 +894,7 @@
 				// }
 				this.renderBasicInfo();
 				this.reload();
-				alert(this.form.controllRespDto.startTime);
+				// alert(this.form.controllRespDto.startTime);
 				// alert(this.startTime);
 				if(this.form.controllRespDto.startTime==''||this.form.controllRespDto.startTime==undefined||this.form.controllRespDto.startTime==null){
 					this.$message({
@@ -945,9 +945,10 @@
 				if(!this.form.controllRespDto.startTime){
 					params.append('startTime',this.form.controllRespDto.startTime)
 				}
-				if(!this.form.controllRespDto.endTime){
-					params.append('endTime',this.form.controllRespDto.endTime);
-				}
+				// if(!this.form.controllRespDto.endTime){
+				// 	params.append('endTime',this.form.controllRespDto.endTime);
+				// }
+				// params.append('endTime',this.form.controllRespDto.endTime);
 				params.append('id',this.form.controllRespDto.id);
 				this.$axios.post(request.testUrl+'/project/auth1/controll/addOrUpdControll',params)
 				.then(res=>{
@@ -957,7 +958,7 @@
 							type: 'info',
 							message: '信息更改成功！'
 						});
-						// this.reload();
+						this.reload();
 						
 					}else{
 						this.$message({

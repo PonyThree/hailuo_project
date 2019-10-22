@@ -16,7 +16,7 @@
 						<div style="display: block;width:100%;line-height: 45px;">填写导入车位的信息</div>
 						<div style="display: block;width:100%;line-height: 15px;color: gray;font-size: 12px;">请按照模板的格式填入数据，模板的表头行名称不可更改，不能删除.</div>
 						<div style="display: block;width:100%;line-height: 35px;font-size: 14px;">
-							<a style="color: #409EFF;" :href="url" download>下载模版</a>
+							<a style="color: #409EFF;" :href="url">下载模版</a>
 							<span style="color: red;margin-left: 20px;">车位信息上传发布后将显示在业主端，请务必确认“车位名称”填写无误，以免车位交易出现问题。</span>
 						</div>
 					</div>
@@ -48,10 +48,14 @@
 	        return {
 	        	labelPosition:'right',
 				form:{},
+				// http://192.168.1.32:7999/product/auth1/ActivityTruckSpace/downImportTemplate
 				// request.testUrl+"/product/truckSpace/downImportTemplate"
-				url:request.testUrl+"/product/activityTruckSpace/truckSpace/downImportTemplate",
+				url:request.testUrl+"/product/activityTruckSpace/downImportTemplate",
 				off:false,
 	        }
+		},
+		created(){
+			console.log(this.$route.query.id);
 		},
 	    methods:{
 	    	//上传文件
@@ -59,7 +63,8 @@
 				console.log(file)
 			    let fd = new FormData();
 				fd.append('excel',file);//传文件
-			    this.$axios.post(request.testUrl+"/product/activityTruckSpace/auth1/truckSpace/importExcel",fd)
+				fd.append('actId',this.$route.query.id);//传文件
+			    this.$axios.post(request.testUrl+"/product/auth1/activityTruckSpace/importExcel",fd)
 			    	.then(res=>{
 			            if(res.data.code==0){
 			            	this.$message({
@@ -79,11 +84,13 @@
 	    	//下一步
 	    	nextStep(){
 	    		if(this.off==true){
-	    			this.$router.push({ path: '/执行活动导入'})
+	    			this.$router.push({ path: '/执行活动导入',query:{
+						id:this.$route.query.id
+					}})
 	    		}else{
 	    			this.$message({
 						type: 'info',
-						message: "请导入车位！！"
+						message: "请导入活动车位！！"
 					}); 
 	    		}
 	    	},

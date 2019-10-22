@@ -1,13 +1,16 @@
 <template>
 	<div>
 		<div class="mains">
-			<el-form :model="form">
+			<el-form :model="form" class="formStyle">
 				<div class="head">{{name}}销售数据看板</div>
-				<div class="right" v-show="indexs==2||indexs==3">
+				<!-- v-show="indexs==2||indexs==3" -->
+				<div class="right" v-if="indexs==1||indexs==2||indexs==3">
 					<el-date-picker v-model="form.endTime" type="datetime" placeholder="选择结束日期时间" class="data" @change="chaiseData"></el-date-picker>
 					<el-date-picker v-model="form.startTime" type="datetime" placeholder="选择开始日期时间" class="data" ></el-date-picker>
 				</div>
-				
+				<div>
+					<el-button type="primary" size="small" @click="exportSaledata" style="position:absolute;right:330px;top:60px;">导出</el-button>
+				</div>
 				<!--tabs切换-->
 				<div class="search">
 					<div @click="downs" :class="{actives:color==true}">全部</div>
@@ -168,8 +171,8 @@
 		        	data:{
 		        		startTime:this.form.startTime,
 		        		endTime:this.form.endTime,
-		        		level2:this.form.level2,
-		        		level3:this.form.level3,
+		        		level3:this.form.level2,
+		        		level2:this.form.level3,
 		        		sellStatus:this.indexs
 		        	}
 				}).then(res=>{
@@ -186,12 +189,48 @@
 						});
 					}
 				})
-      		}
+			  },
+			//   导出销售数据
+			  exportSaledata(){
+				this.$axios({
+					method:'post',
+					// http://localhost:7999/product/auth1/truckSpace/truckSpaceSellExport?startTime=2019-05-08&endTime=2019-10-25
+					url:request.testUrl+"/product/auth1/truckSpace/truckSpaceSellExport",
+					headers:{
+						'content-type':'application/x-www-form-urlencoded'
+					},
+					responseType:'blob'
+					}).then(res=>{
+						console.log(res.data)
+						if(!res) return 
+						let blob=new Blob([res.data],{type:'application/vnd.ms-excel;charset=utf8'})
+						var downloadElement=document.createElement('a');
+						//创建下载的链接
+						var href=window.URL.createObjectURL(blob)
+						downloadElement.href=href;
+						//下载文件名
+						downloadElement.download="销售数据excel.xls";
+						document.body.appendChild(downloadElement);
+						// 点击下载
+						downloadElement.click();
+						// 下载完移除
+						document.body.removeChild(downloadElement);
+						// 释放掉blob对象
+						window.URL.revokeObjectURL(href);
+					}).catch(error=>{
+						console.log(error)
+				})
+			  }
 	  	}
 	}
 </script>
 
 <style>
+	.el-button--primary {
+		color:#fff;
+		background-color:rgb(151,104,229)!important;
+		border-color:none;
+	}
 	.mains{
 		width: 96%;
 		background: #d9ecff;
@@ -224,6 +263,7 @@
 	.mains .search:hover{
 		cursor: pointer;
 	}
+
 	.mains .search .active1{
 		background-color: #09f;
         color: #fff;
@@ -349,6 +389,9 @@
 		padding: 0 40px 0 40px;
 		line-height: 50px;
 		font-size: 18px;
+	}
+	.formStyle{
+		position: relative;
 	}
 	.bottom .tal .single div{
 		display: block;

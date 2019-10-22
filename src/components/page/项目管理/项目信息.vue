@@ -86,7 +86,7 @@
 	    					<el-checkbox label="在前端展示此项目" v-model="form.controllRespDto.showStatus" v-show="false"></el-checkbox>
 						</el-form-item>
 						<el-form-item label="开盘时间 :" style="width: 800px;">
-							<el-date-picker v-model="form.controllRespDto.startTime" type="datetime" @blur="getStartTime" :close-on-click-modal="false"></el-date-picker>
+							<el-date-picker v-model="form.controllRespDto.startTime" type="datetime" @blur="getStartTime"  @change="changeStartTime" @focus="focusStartTime"></el-date-picker>
 							<el-date-picker v-model="form.controllRespDto.endTime" type="datetime" v-show="false"></el-date-picker>
 							<!--<el-checkbox label="开盘时间待定" v-model="form.controllRgou.checked10" style="margin-left: 30px;"></el-checkbox>-->
 						</el-form-item>
@@ -490,7 +490,8 @@
 			this.renderBasicInfo();
 			this.getCurrentTime();
 			this.getProvinceList();
-			this.getStartTime();
+			// this.getStartTime();
+			this.firstPageTime();
 	    },
 	    methods:{
 			jugePhone(phone){
@@ -629,6 +630,8 @@
 							this.form.controllRespDto.openQuotation=res.data.data.projectInfoVo.openStatus;
 							this.form.controllRespDto.id=res.data.data.projectInfoVo.id;
 							this.form.controllRespDto.startTime=this.transformDate(res.data.data.controllRespDto.startTime);
+							// localStorage.setItem('startTime',this.form.controllRespDto.startTime);
+							// alert(this.form.controllRespDto.startTime)
 							this.form.controllRespDto.endTime=this.transformDate(res.data.data.controllRespDto.endTime);
 							// 项目控制数据绑定
 							// 认购金
@@ -752,16 +755,33 @@
 			},
 			//失去焦点时 获取开始时间 结束时间
 			getStartTime(){
-				//当前时间小于开始时间---已开盘
+				let startTime=localStorage.getItem('startTime')
+				let startTime1=new Date(startTime).getTime()
+						//当前时间小于开始时间---已开盘
+					// if(this.currentTime>=startTime1){
+					// 	this.openQuotation=false;
+					// 	this.form.controllRespDto.openQuotation=1;
+					// }else{
+					// 	this.openQuotation=false;
+					// 	this.form.controllRespDto.openQuotation=0;
+					// }
+			},
+			changeStartTime(){
 				if(this.currentTime>=this.form.controllRespDto.startTime){
-					this.openQuotation=false;
-					this.form.controllRespDto.openQuotation=1;
-					// alert(this.form.controllRespDto.openQuotation)
-				}else{
-					this.openQuotation=false;
-					this.form.controllRespDto.openQuotation=0;
-					// alert(this.form.controllRespDto.openQuotation)
+						this.openQuotation=false;
+						this.form.controllRespDto.openQuotation=1;
+					}else{
+						this.openQuotation=false;
+						this.form.controllRespDto.openQuotation=0;
+						// alert(this.form.controllRespDto.openQuotation)
+						console.log(this.form.controllRespDto.openQuotation)
+						console.log(this.form.controllRespDto.startTime)
 				}
+				// alert(this.form.controllRespDto.startTime)
+			},
+			focusStartTime(){
+				localStorage.setItem('startTime',this.form.controllRespDto.startTime)
+				console.log(this.form.controllRespDto.startTime)
 			},
 			//一上来就进行时间判断
 			firstPageTime(){
@@ -1011,6 +1031,7 @@
 								message:'删除成功'
 							});
 							this.renderBasicInfo()
+							this.reload()
 						}
 					})
 				}).catch(() => {
@@ -1350,9 +1371,10 @@
 //									this.reload()
 								}else{
 									this.$message({
-										type: 'info',
+										type: 'error',
 										message: res.data.msg
 									});
+									this.renderBasicInfo();
 								}
 								
 						})
@@ -1453,9 +1475,13 @@
 								
 							}else{
 								this.$message({
-									type: 'info',
+									type: 'error',
 									message: res.data.msg
 								});
+								var lock=setTimeout(()=>{
+									this.renderBasicInfo();
+									clearTimeout(lock)
+								})
 							}
 							
 						})
@@ -1514,8 +1540,9 @@
 						let result = this.result; 
 						let img = new Image();img.src = result; 
 						img.onload = function() {
-							let data = self.compress(img);self.imgUrl = result; 
-							let blob = self.dataURItoBlob(data); 
+							let data = self.$handlePic.compress(img);
+							self.imgUrl = result; 
+							let blob = self.$handlePic.dataURItoBlob(data); 
 							var formData = new FormData();
 							formData.append("file", blob); 
 							let config = { 
@@ -1539,40 +1566,7 @@
 						};
 					};
 				}
-			},
-			// 压缩图片 
-			compress(img) { 
-				let canvas = document.createElement("canvas"); 
-				let ctx = canvas.getContext("2d"); 
-				let initSize = img.src.length; 
-				let width = img.width; 
-				let height = img.height;
-				canvas.width = width;
-				canvas.height = height; 
-				// 铺底色 
-				ctx.fillStyle = "#fff";
-				ctx.fillRect(0, 0, canvas.width, canvas.height);
-				ctx.drawImage(img, 0, 0, width, height); 
-				//进行最小压缩 
-				let ndata = canvas.toDataURL("image/jpeg", 0.3); 
-				return ndata;
-			},
-			// base64转成bolb对象 
-			dataURItoBlob(base64Data) { 
-				var byteString; 
-				if (base64Data.split(",")[0].indexOf("base64") >= 0)
-					byteString = atob(base64Data.split(",")[1]); 
-				else byteString = unescape(base64Data.split(",")[1]); 
-				var mimeString = base64Data
-				.split(",")[0]
-				.split(":")[1]
-				.split(";")[0]; 
-				var ia = new Uint8Array(byteString.length); 
-				for (var i = 0; i < byteString.length; i++) {
-					ia[i] = byteString.charCodeAt(i);
-				} 
-				return new Blob([ia], { type: mimeString });
-			}, 
+			}
 	    }
 	}
 </script>

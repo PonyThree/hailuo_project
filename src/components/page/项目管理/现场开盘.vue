@@ -178,15 +178,31 @@
 						}else{
 							this.rehearseOpen=0;
 						}
+						var data={};
+						data.localOpen=this.localOpen;
+						data.rehearseOpen=this.rehearseOpen;
+						if(!this.form.mlStartTime){
+							this.$message({
+								type:'warning',
+								message:'请选择开始时间'
+							})
+							return;
+						}else{
+							data.mlStartTime=this.form.mlStartTime;
+						}
+						if(!this.form.mlEndTime){
+							this.$message({
+								type:'warning',
+								message:'请选择结束时间'
+							})
+							return ;
+						}else{
+							data.mlEndTime=this.form.mlEndTime;
+						}
 						this.$axios({
 							method:'post',
 							url:request.testUrl+'/project/auth1/openActivity/update',
-							data:JSON.stringify({
-								localOpen:this.localOpen,
-								rehearseOpen:this.rehearseOpen,
-								mlStartTime:this.form.mlStartTime,
-								mlEndTime:this.form.mlEndTime
-							})
+							data:JSON.stringify(data)
 						}).then(res=>{
 							if(res.data.code==0){
 								this.renderData();

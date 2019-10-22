@@ -177,24 +177,24 @@
 		    // safari
 		    window.pageYOffset = 0
 	    	//渲染区域列表
-		    this.$axios.get(request.testUrl+"/product/auth1/truckSpaceArea/doSelectAllList")
+		    this.$axios.get(request.testUrl+"/product/auth1/truckSpaceArea/selectAllList")
 		    	.then(res=>{
 		            if(res.data.code==0){
 		            	this.level1Info=res.data.data
 		            }
 		    	})
-		    //渲染楼栋二级列表
+		    //渲染楼栋三级列表
 		    this.$axios.get(request.testUrl+"/product/auth1/TruckSpaceLevelThree/doSelectAllList")
 		    	.then(res=>{
 		            if(res.data.code==0){
-		            	this.level2Info=res.data.data
+		            	this.level3Info=res.data.data
 		            }
 		    	})
-		    //渲染楼栋三级列表
+		    //渲染楼栋二级列表
 		    this.$axios.get(request.testUrl+"/product/auth1/TruckSpaceLevelTwo/doSelectAllList")
 		    	.then(res=>{
 		            if(res.data.code==0){
-		            	this.level3Info=res.data.data
+		            	this.level2Info=res.data.data
 		            }
 		    	})
 		    //渲染车位标签列表
@@ -214,7 +214,8 @@
 					this.form.carSpaceStatus=res.data.data.carSpaceStatus==2?true:false
 					this.form.stopSell=res.data.data.stopSell==1?true:false
 					this.form.sellStatus=res.data.data.sellStatus==4?true:false
-					this.form.truckSpaceImages=res.data.data.truckSpaceDetailImages
+					this.form.truckSpaceImages=res.data.data.truckSpaceImages||[]
+					// console.log(this.form.truckSpaceImages)
 				}
 			})
 			//渲染车位标签下的标签 
@@ -278,50 +279,51 @@
 		},
 	    methods:{
 	    	down1(){
-	    		if(parseInt(this.form.sellPrice)<parseInt(this.form.floorPrice)){
-	    			this.$message({
-						type: 'info',
-						message: '销售价需高于底价'
-					});
-					this.form.floorPrice=''
-					return
-	    		}
+	    		// if(parseInt(this.form.sellPrice)<parseInt(this.form.floorPrice)){
+	    		// 	this.$message({
+				// 		type: 'info',
+				// 		message: '销售价需高于底价'
+				// 	});
+				// 	this.form.floorPrice=''
+				// 	return
+				// }
+				// console.log(this.form.floorPrice)
 	    	},
 	    	downs(){
-	    		if(parseInt(this.form.facePrice)<parseInt(this.form.floorPrice)){
-	    			this.$message({
-						type: 'info',
-						message: '表价需高于底价'
-					});
-					this.form.facePrice=''
-					return
-	    		}
-	    		if(parseInt(this.form.facePrice)<parseInt(this.form.sellPrice)){
-	    			this.$message({
-						type: 'info',
-						message: '表价需高于销售价'
-					});
-					this.form.facePrice=''
-					return
-	    		}
+	    		// if(parseInt(this.form.facePrice)<parseInt(this.form.floorPrice)){
+	    		// 	this.$message({
+				// 		type: 'info',
+				// 		message: '表价需高于底价'
+				// 	});
+				// 	this.form.facePrice=''
+				// 	return
+	    		// }
+	    		// if(parseInt(this.form.facePrice)<parseInt(this.form.sellPrice)){
+	    		// 	this.$message({
+				// 		type: 'info',
+				// 		message: '表价需高于销售价'
+				// 	});
+				// 	this.form.facePrice=''
+				// 	return
+	    		// }
 	    	},
 	    	down(){
-	    		if(parseInt(this.form.sellPrice)<parseInt(this.form.floorPrice)){
-	    			this.$message({
-						type: 'info',
-						message: '销售价需高于底价'
-					});
-					this.form.sellPrice=''
-					return
-	    		}
-	    		if(parseInt(this.form.facePrice)<parseInt(this.form.sellPrice)){
-	    			this.$message({
-						type: 'info',
-						message: '销售价需低于表价'
-					});
-					this.form.sellPrice=''
-					return
-	    		}
+	    		// if(parseInt(this.form.sellPrice)<parseInt(this.form.floorPrice)){
+	    		// 	this.$message({
+				// 		type: 'info',
+				// 		message: '销售价需高于底价'
+				// 	});
+				// 	this.form.sellPrice=''
+				// 	return
+	    		// }
+	    		// if(parseInt(this.form.facePrice)<parseInt(this.form.sellPrice)){
+	    		// 	this.$message({
+				// 		type: 'info',
+				// 		message: '销售价需低于表价'
+				// 	});
+				// 	this.form.sellPrice=''
+				// 	return
+	    		// }
 	    	},
 	    	
 	    	//车位标签选择
@@ -385,6 +387,38 @@
       		},
 	    	//保存并发布
 	    	release(){
+				if(parseInt(this.form.facePrice)<parseInt(this.form.floorPrice)){
+	    			this.$message({
+						type: 'info',
+						message: '表价需高于底价'
+					});
+					// this.form.facePrice=''
+					return
+	    		}
+	    		if(parseInt(this.form.facePrice)<parseInt(this.form.sellPrice)){
+	    			this.$message({
+						type: 'info',
+						message: '表价需高于销售价'
+					});
+					// this.form.facePrice=''
+					return
+				}
+				if(parseInt(this.form.sellPrice)<parseInt(this.form.floorPrice)){
+	    			this.$message({
+						type: 'info',
+						message: '销售价需高于底价'
+					});
+					// this.form.sellPrice=''
+					return
+	    		}
+	    		if(parseInt(this.form.facePrice)<parseInt(this.form.sellPrice)){
+	    			this.$message({
+						type: 'info',
+						message: '销售价需低于表价'
+					});
+					// this.form.sellPrice=''
+					return
+	    		}
 	            if(parseInt(this.form.outsideArea)<0||parseInt(this.form.insideArea)<0||parseInt(this.form.floorPrice)<0||parseInt(this.form.sellPrice)<0||parseInt(this.form.facePrice)<0){
 	    			this.$message({
 						type: 'info',
@@ -441,10 +475,43 @@
 						message: '面积或金额不能为负数！'
 					});
 					return
+				}
+				if(parseInt(this.form.facePrice)<parseInt(this.form.floorPrice)){
+	    			this.$message({
+						type: 'info',
+						message: '表价需高于底价'
+					});
+					// this.form.facePrice=''
+					return
+	    		}
+	    		if(parseInt(this.form.facePrice)<parseInt(this.form.sellPrice)){
+	    			this.$message({
+						type: 'info',
+						message: '表价需高于销售价'
+					});
+					// this.form.facePrice=''
+					return
+				}
+				if(parseInt(this.form.sellPrice)<parseInt(this.form.floorPrice)){
+	    			this.$message({
+						type: 'info',
+						message: '销售价需高于底价'
+					});
+					// this.form.sellPrice=''
+					return
+	    		}
+	    		if(parseInt(this.form.facePrice)<parseInt(this.form.sellPrice)){
+	    			this.$message({
+						type: 'info',
+						message: '销售价需低于表价'
+					});
+					// this.form.sellPrice=''
+					return
 	    		}
 	    		this.$refs.form.validate((valid) => {
 					if (valid) {
-			    		let ids=this.listInfo.map(e=>({id:e.id}))
+						let ids=this.listInfo.map(e=>({id:e.id}))
+						console.log(this.form.truckSpaceImages)
 			    		this.$axios({
 				        	method:'post',
 				        	url:request.testUrl+"/product/auth1/truckSpace/update",
@@ -464,7 +531,7 @@
 				        		sellStatus:this.form.sellStatus?4:0,
 				        		stopSell:this.form.stopSell?1:0,
 				        		tagRespDtos:ids,
-				        		truckSpaceDetailImages:this.form.truckSpaceDetailImages
+				        		truckSpaceDetailImages:this.form.truckSpaceImages
 				        	}
 						}).then(res=>{
 							if(res.data.code==0){

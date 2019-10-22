@@ -34,9 +34,10 @@
 				<el-table-column prop="tagTypeName" label="标签类别" align="center"></el-table-column>
 				<el-table-column prop="name" label="标签名称" align="center"></el-table-column>
 				<el-table-column prop="sort" label="排序" align="center"></el-table-column>
-				<el-table-column label="是否禁用" align="center">
+				<el-table-column label="禁用" align="center">
 					<template slot-scope="scope">
 						<el-switch v-model="scope.row.useStatus" active-color="#409EFF" inactive-color="#909399" @change="changeSwitch(scope.row)"></el-switch>
+						<!-- <el-switch v-model="scope.row.useStatus" active-text="" inactive-text="" @change="changeStatus(scope.row.id,scope.row.online)" v-if="scope.row.actStatus!=3"></el-switch> -->
 					</template>
 				</el-table-column>
 				<el-table-column prop="caozuo" label="操作" align="center">

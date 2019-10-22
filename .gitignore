@@ -6,6 +6,8 @@ favicon.ico
 # local env files
 .env.local
 .env.*.local
+*.md
+
 
 # Log files
 npm-debug.log*
@@ -20,3 +22,5 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw*
+*.zip
+*.vscode

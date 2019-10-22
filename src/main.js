@@ -11,16 +11,16 @@ import "babel-polyfill";
 import './assets/fonts/iconfont.css';//引入阿里图标
 
 import { Loading } from 'element-ui';//引入elment的loading
-
-import qs from 'qs';//qs 用来解决vue中post请求以 a=a&b=b 的格式
-
+//qs 用来解决vue中post请求以 a=a&b=b 的格式
+import qs from 'qs';
 //引入全局配置服务器域名
 import request from './api/request.js'
 global.request=request;
 //引入时间处理函数
 import handleTime from './ulit/handleTime.js'
 global.handleTime=handleTime;
-// console.log(handleTime.jugeNum);
+//引入图片压缩
+import handlePic from './ulit/compressPic.js'
 //引入百度地图
 import BaiduMap from 'vue-baidu-map'
 
@@ -39,8 +39,9 @@ Vue.use(ElementUI, {
     size: 'small'
 });
 Vue.prototype.$axios = axios;
-
-
+Vue.prototype.$handlePic=handlePic;
+// Vue.prototype.$handelTime =handelTime;
+Vue.use(qs)
 //那么 showFullScreenLoading() tryHideFullScreenLoading() 要干的事儿就是将同一时刻的请求合并。 
 //声明一个变量 needLoadingRequestCount，每次调用showFullScreenLoading方法 needLoadingRequestCount + 1。 
 //调用tryHideFullScreenLoading()方法，needLoadingRequestCount - 1。needLoadingRequestCount为 0 时，结束 loading。
